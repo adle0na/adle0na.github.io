@@ -1,4 +1,399 @@
----
-layout: home
-author_profile: true
----
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>찹살떡 게임즈 — Chopsaltteok Games</title>
+<meta name="description" content="한국의 밤과 이야기를 소재로, AI와 함께 게임을 빚는 1인 인디 스튜디오. 솔루나(SOLUNA) — 백귀야행 디펜스 로그라이트 제작 중.">
+<meta property="og:title" content="찹살떡 게임즈 — Chopsaltteok Games">
+<meta property="og:description" content="백귀야행 디펜스 로그라이트 '솔루나' 를 만드는 AI 협업 1인 스튜디오">
+<meta property="og:image" content="pf/title_bg.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌕</text></svg>">
+<style>
+  :root{
+    --bg:#0B0A18; --bg2:#12102400; --surface:#161430; --panel:#1B1938; --panel2:#232050;
+    --line:#332F5E; --line-soft:#282454;
+    --gold:#E6B34A; --gold-b:#F5D98B; --gold-dim:#8f7838;
+    --plum:#D98FB4; --jade:#5FB58C; --crimson:#D9534F;
+    --text:#F3ECDD; --dim:#B7B0CC; --muted:#8F87AC;
+    --serif:"Noto Serif KR","Iowan Old Style",Georgia,serif;
+    --sans:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--gold);color:#0B0A18}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .serif{font-family:var(--serif)}
+  .eyebrow{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700}
+
+  /* reveal on scroll */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
+  .rv.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){ .rv{opacity:1;transform:none;transition:none} *{animation:none!important} }
+
+  /* ───────── hero ───────── */
+  .hero{position:relative;min-height:96vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;
+    border-bottom:1px solid var(--line-soft)}
+  .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:220px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:2;pointer-events:none}
+  #stars{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+  .moon{position:absolute;top:8%;right:7%;width:210px;height:210px;border-radius:50%;z-index:1;opacity:.92;
+    background:radial-gradient(circle at 38% 38%,var(--gold-b),#C9A64B 55%,#7d651f 100%);
+    box-shadow:0 0 110px 30px rgba(230,179,74,.25)}
+  .hero-fox{position:absolute;right:-40px;bottom:-30px;width:min(46vw,560px);opacity:.5;z-index:1;
+    filter:drop-shadow(0 0 60px rgba(230,179,74,.12));pointer-events:none;
+    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 30%);mask-image:linear-gradient(to top,transparent 0%,#000 30%)}
+  .hero .wrap{position:relative;z-index:3;padding-top:80px;padding-bottom:120px}
+  .brand{display:inline-flex;align-items:center;gap:13px;margin-bottom:30px}
+  .seal{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--gold);display:grid;place-items:center;
+    color:var(--gold);font-family:var(--serif);font-size:23px;font-weight:800;background:rgba(230,179,74,.07)}
+  .brand span{font-weight:600;letter-spacing:.06em;color:var(--dim);font-size:15px}
+  h1.title{font-family:var(--serif);font-weight:900;font-size:clamp(46px,8vw,96px);line-height:1.04;letter-spacing:-.015em}
+  h1.title em{font-style:normal;color:var(--gold-b);display:block}
+  .lede{margin-top:24px;max-width:42ch;font-size:clamp(16px,2vw,20px);color:var(--dim)}
+  .hero-meta{margin-top:38px;display:flex;flex-wrap:wrap;gap:10px 30px;font-size:13.5px;color:var(--muted)}
+  .hero-meta b{color:var(--text);font-weight:600}
+  .scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;color:var(--muted);font-size:12px;letter-spacing:.2em;animation:cue 2.4s ease-in-out infinite}
+  @keyframes cue{0%,100%{transform:translate(-50%,0);opacity:.55}50%{transform:translate(-50%,8px);opacity:1}}
+
+  /* ───────── section shell ───────── */
+  section{padding:110px 0;border-bottom:1px solid var(--line-soft);position:relative}
+  .sec-head{margin-bottom:52px}
+  .sec-head h2{font-family:var(--serif);font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em;margin-top:10px}
+  .sec-head p{color:var(--muted);font-size:15px;margin-top:10px;max-width:56ch}
+
+  /* ───────── studio / stats ───────── */
+  .studio{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
+  .studio-copy p{color:var(--dim);font-size:16.5px;margin-bottom:18px;max-width:58ch}
+  .studio-copy strong{color:var(--text)}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:30px}
+  .stat{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:var(--panel)}
+  .stat b{display:block;font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:800;color:var(--gold-b);line-height:1.1}
+  .stat span{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+  .caps{display:flex;flex-direction:column;gap:14px}
+  .cap{padding:20px 22px;border:1px solid var(--line);border-radius:16px;background:var(--panel);transition:border-color .25s}
+  .cap:hover{border-color:var(--gold-dim)}
+  .cap h4{font-size:15px;color:var(--gold);margin-bottom:6px;letter-spacing:.02em}
+  .cap p{font-size:14px;color:var(--dim)}
+  .pipe{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+  .pipe i{font-style:normal;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--panel2);color:var(--dim)}
+  .pipe s{text-decoration:none;color:var(--gold-dim)}
+
+  /* ───────── soluna showcase ───────── */
+  #soluna{padding-top:0;border-bottom:none}
+  .sol-hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line-soft);padding:130px 0 90px}
+  .sol-hero .bgimg{position:absolute;inset:0;background:url(pf/title_bg.jpg) center 22%/cover no-repeat;opacity:.34;
+    -webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 96%);mask-image:linear-gradient(to bottom,#000 30%,transparent 96%)}
+  .sol-hero .wrap{position:relative;z-index:2}
+  .sol-logo{max-width:min(520px,80vw);margin-bottom:8px;filter:drop-shadow(0 6px 30px rgba(0,0,0,.6))}
+  .sol-tag{font-family:var(--serif);font-weight:800;font-size:clamp(20px,3vw,28px);color:var(--gold-b);margin-top:6px}
+  .sol-sub{color:var(--dim);max-width:60ch;margin-top:14px;font-size:16px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chip{font-size:12.5px;padding:6px 13px;border-radius:999px;border:1px solid rgba(230,179,74,.35);color:var(--gold-b);background:rgba(230,179,74,.08)}
+  .sol-specs{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:20px;font-size:13.5px;color:var(--muted)}
+  .sol-specs b{color:var(--text);font-weight:600}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:12px 22px;border-radius:12px;
+    text-decoration:none;border:1px solid var(--line);color:var(--text);transition:.18s}
+  .btn.primary{background:var(--gold);color:#0B0A18;border-color:var(--gold)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.primary:hover{background:var(--gold-b)}
+  .sol-cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+
+  /* screenshots */
+  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .shot{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);background:var(--panel);
+    box-shadow:0 18px 50px rgba(0,0,0,.45);transition:transform .3s cubic-bezier(.2,.7,.3,1),box-shadow .3s}
+  .shot:hover{transform:translateY(-8px);box-shadow:0 30px 70px rgba(0,0,0,.6)}
+  .shot img{width:100%;aspect-ratio:9/16;object-fit:cover}
+  .shot figcaption{position:absolute;inset:auto 0 0 0;padding:34px 14px 12px;font-size:12.5px;color:var(--text);
+    background:linear-gradient(to top,rgba(0,0,0,.78),transparent);letter-spacing:.03em;text-align:center}
+
+  /* feature grid */
+  .feats{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .feat{border:1px solid var(--line);border-radius:18px;padding:26px 28px;background:linear-gradient(160deg,var(--panel),var(--surface));transition:border-color .25s}
+  .feat:hover{border-color:var(--gold-dim)}
+  .feat .no{font-family:var(--serif);font-weight:800;color:var(--gold-dim);font-size:13px;letter-spacing:.2em}
+  .feat h4{font-family:var(--serif);font-size:20px;font-weight:800;margin:8px 0 8px;color:var(--text)}
+  .feat p{font-size:14px;color:var(--dim)}
+
+  /* boss lineup */
+  .bosses{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .boss{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;text-align:center;
+    background:radial-gradient(120% 90% at 50% 0%,#241f4d 0%,var(--surface) 70%);padding:26px 14px 22px;transition:transform .3s,border-color .3s}
+  .boss:hover{transform:translateY(-6px);border-color:rgba(217,83,79,.55)}
+  .boss img{width:82%;margin:0 auto;filter:drop-shadow(0 12px 26px rgba(0,0,0,.55));transition:transform .4s}
+  .boss:hover img{transform:scale(1.06)}
+  .boss .ch{font-size:11px;letter-spacing:.22em;color:var(--crimson);font-weight:700;margin-top:14px}
+  .boss h4{font-family:var(--serif);font-size:19px;font-weight:800;margin-top:4px}
+  .boss span{font-size:12.5px;color:var(--muted)}
+
+  /* yokai strip */
+  .yokai{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:22px}
+  .yo{border:1px solid var(--line-soft);border-radius:16px;background:var(--panel);padding:16px 10px 14px;text-align:center;transition:transform .25s}
+  .yo:hover{transform:translateY(-4px)}
+  .yo img{width:74%;margin:0 auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}
+  .yo span{display:block;font-size:12.5px;color:var(--dim);margin-top:10px;letter-spacing:.06em}
+  .more-note{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;letter-spacing:.04em}
+
+  /* gacha strip */
+  .gacha{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center}
+  .gacha .box{display:grid;place-items:center;padding:30px;border:1px solid var(--line);border-radius:22px;
+    background:radial-gradient(90% 80% at 50% 30%,#2a2140 0%,var(--surface) 75%)}
+  .gacha .box img{width:min(260px,60%);filter:drop-shadow(0 20px 40px rgba(0,0,0,.55));animation:bob 4.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .gacha h3{font-family:var(--serif);font-size:clamp(24px,3.4vw,34px);font-weight:800;margin-bottom:14px}
+  .gacha p{color:var(--dim);font-size:15.5px;margin-bottom:12px;max-width:52ch}
+
+  /* ───────── arcane ───────── */
+  .arcane{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .arc-art{position:relative;min-height:320px;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+    background:linear-gradient(160deg,#2a1430,#160a1e)}
+  .arc-art canvas{position:absolute;inset:0;width:100%;height:100%}
+  .arc-art .badge{position:absolute;top:16px;left:16px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    padding:6px 13px;border-radius:999px;background:rgba(217,143,180,.15);color:var(--plum);border:1px solid rgba(217,143,180,.4)}
+  .arcane h3{font-family:var(--serif);font-size:clamp(26px,3.6vw,38px);font-weight:800}
+  .arcane .sub{color:var(--plum);font-size:15.5px;font-weight:500;margin-top:8px}
+  .arcane .desc{color:var(--dim);font-size:15px;margin-top:14px;max-width:52ch}
+  .note{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .tag{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:var(--panel2)}
+
+  /* ───────── contact ───────── */
+  .contact{text-align:center;padding:120px 0;border-bottom:none}
+  .contact h2{font-family:var(--serif);font-size:clamp(28px,5vw,48px);font-weight:800;margin:12px 0 14px}
+  .contact p{color:var(--dim);max-width:46ch;margin:0 auto 30px}
+  .mail{display:inline-flex;align-items:center;gap:10px;font-size:clamp(17px,2.6vw,22px);font-weight:700;color:var(--gold-b);
+    text-decoration:none;padding:14px 26px;border:1px solid var(--gold);border-radius:14px;transition:.18s}
+  .mail:hover{background:var(--gold);color:#0B0A18}
+  footer{padding:38px 0;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line-soft)}
+
+  @media (max-width:900px){
+    .studio,.gacha,.arcane{grid-template-columns:1fr;gap:36px}
+    .shots{grid-template-columns:repeat(2,1fr)}
+    .bosses{grid-template-columns:repeat(2,1fr)}
+    .yokai{grid-template-columns:repeat(2,1fr)}
+    .feats{grid-template-columns:1fr}
+    .hero-fox{opacity:.28}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ═══════ HERO ═══════ -->
+  <header class="hero">
+    <canvas id="stars"></canvas>
+    <div class="moon"></div>
+    <img class="hero-fox" src="pf/mob_gumiho.png" alt="">
+    <div class="wrap">
+      <div class="brand"><span class="seal">餅</span><span>CHOPSALTTEOK&nbsp;GAMES</span></div>
+      <p class="eyebrow">Korean folklore &amp; romance games</p>
+      <h1 class="title serif">쫀득하게 빚어낸<em>작은 세계들.</em></h1>
+      <p class="lede">찹살떡 게임즈는 한국의 밤과 이야기를 소재로, AI와 함께 게임을 빚는 1인 인디 스튜디오입니다.</p>
+      <div class="hero-meta">
+        <span><b>제작</b> Unity · 모바일</span>
+        <span><b>방식</b> AI 협업 파이프라인</span>
+        <span><b>지금</b> 2개 타이틀 제작 중</span>
+      </div>
+    </div>
+    <div class="scroll-cue">SCROLL ▾</div>
+  </header>
+
+  <!-- ═══════ STUDIO ═══════ -->
+  <section id="studio">
+    <div class="wrap studio">
+      <div class="studio-copy rv">
+        <p class="eyebrow" style="margin-bottom:16px">Studio · AI Pipeline</p>
+        <p><strong>작지만 단단하게.</strong> 기획·프로그래밍·아트를 한 사람이 맡되, AI 에이전트와 생성형 아트를 파이프라인에 녹여 <strong>상용급 볼륨을 짧은 주기</strong>로 만들어 냅니다.</p>
+        <p>대화형 AI 에이전트가 C# 시스템 코드를 함께 구현하고, 생성형 아트는 <strong>프롬프트 → 크로마키 추출 → 파츠 분할 → 엔진 임포트</strong>의 자동화 파이프라인을 거쳐 게임에 들어갑니다. 사람은 방향을 정하고, 검수하고, 세계관을 지킵니다.</p>
+        <div class="pipe">
+          <i>프롬프트 설계</i><s>→</s><i>이미지 생성</i><s>→</s><i>크로마키·컷</i><s>→</s><i>파츠 분할·리깅</i><s>→</s><i>엔진 임포트</i>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>1인 × AI</b><span>기획 · 코드 · 아트 전 공정</span></div>
+          <div class="stat"><b>5주</b><span>솔루나 코어 개발 기간</span></div>
+          <div class="stat"><b>300+</b><span>AI 생성 아트 리소스</span></div>
+          <div class="stat"><b>100</b><span>챕터 · 대마 4보스</span></div>
+        </div>
+      </div>
+      <div class="caps rv">
+        <div class="cap"><h4>AI 에이전트 개발</h4><p>전투 시스템 · 메타 경제 · UI를 대화형 에이전트와 반복 구현. 코드 리뷰와 플레이 검증까지 에이전트가 수행합니다.</p></div>
+        <div class="cap"><h4>생성형 아트 파이프라인</h4><p>요괴 24종 + 대마 4종, 영물 30여 종, 배경·VFX·UI 전량을 생성형 아트로 제작하고 자동 후처리로 게임에 통합.</p></div>
+        <div class="cap"><h4>세계관 우선 디자인</h4><p>백귀야행 · 수묵 · 금박 — 작품마다 팔레트·타이포·모티프를 새로 세워 템플릿 느낌을 피합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ SOLUNA ═══════ -->
+  <section id="soluna">
+    <div class="sol-hero">
+      <div class="bgimg"></div>
+      <div class="wrap rv">
+        <p class="eyebrow">Flagship Title · In Development</p>
+        <img class="sol-logo" src="pf/logo_base.png" alt="SOLUNA 솔루나">
+        <p class="sol-tag serif">달빛 아래, 백귀(百鬼)가 깨어난다.</p>
+        <p class="sol-sub">달빛에 깨어난 백귀를 음(陰)과 양(陽)의 영물로 봉인하는 세로형 레인 디펜스 로그라이트.
+          진영 드래프트로 매 판이 달라지고, 30여 종 영물과 100챕터 · 대마 4보스가 끝까지 긴장을 끌고 갑니다.</p>
+        <div class="chips">
+          <span class="chip">음양 드래프트</span><span class="chip">100 챕터</span>
+          <span class="chip">요괴 24종 + 대마 4종</span><span class="chip">영물 봉인함</span><span class="chip">수묵 · 금박 아트</span>
+        </div>
+        <div class="sol-specs">
+          <span><b>플랫폼</b> Android</span><span><b>엔진</b> Unity 6000.3</span>
+          <span><b>장르</b> 디펜스 · 로그라이트</span><span><b>1판</b> 약 2~4분</span>
+        </div>
+        <div class="sol-cta">
+          <a class="btn primary" href="https://github.com/adle0na/Mukryeong" target="_blank" rel="noopener">GitHub 저장소</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- screenshots -->
+    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <p class="eyebrow">In-Game</p>
+          <h2 class="serif">스크린샷</h2>
+        </div>
+        <div class="shots rv">
+          <figure class="shot"><img src="pf/shot_main.jpg" alt="메인 화면" loading="lazy"><figcaption>메인 — 챕터 선택</figcaption></figure>
+          <figure class="shot"><img src="pf/shot_draft.jpg" alt="음양 드래프트" loading="lazy"><figcaption>음양 드래프트 — 강화 선택</figcaption></figure>
+          <figure class="shot"><img src="pf/shot_gacha.jpg" alt="영물 봉인함" loading="lazy"><figcaption>영물 봉인함 — 소환</figcaption></figure>
+          <figure class="shot"><img src="pf/shot_reward.jpg" alt="아이템 획득" loading="lazy"><figcaption>아이템 획득</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- features -->
+    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <p class="eyebrow">Core Systems</p>
+          <h2 class="serif">매 판이 달라지는 밤</h2>
+        </div>
+        <div class="feats rv">
+          <div class="feat"><span class="no">01</span><h4>음양(陰陽) 드래프트</h4><p>빛과 어둠, 두 진영의 영물을 골라 덱을 구성합니다. 픽마다 태극 게이지가 움직이고, 기운 쪽의 영물이 강해집니다 — 매 판 다른 빌드가 태어납니다.</p></div>
+          <div class="feat"><span class="no">02</span><h4>100 챕터 · 대마 4보스</h4><p>요괴 24종이 광폭화 이동 패턴으로 몰려오고, 25챕터마다 대마(大魔)가 고유 스킬로 판을 흔듭니다.</p></div>
+          <div class="feat"><span class="no">03</span><h4>영물 봉인함</h4><p>혼석으로 봉인함을 열어 영물의 정수를 모읍니다. 주간 확률업 로테이션과 30/100 천장으로 영급·신급 정수를 확정 획득.</p></div>
+          <div class="feat"><span class="no">04</span><h4>정수 · 파편 성장</h4><p>무기별 정수로 상위 영물을 해금하고, 파편으로 강화합니다. 진행도 보물상자 · 상점 · 출석이 재화 순환을 받칩니다.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- bosses -->
+    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <p class="eyebrow">The Four Great Demons</p>
+          <h2 class="serif">대마(大魔) 사천왕</h2>
+          <p>25챕터마다 길을 막는 밤의 지배자들. 전원 생성형 아트 파이프라인으로 제작되었습니다.</p>
+        </div>
+        <div class="bosses rv">
+          <div class="boss"><img src="pf/boss_shuten.png" alt="슈텐도지" loading="lazy"><div class="ch">CH.25</div><h4 class="serif">슈텐도지</h4><span>오니의 왕</span></div>
+          <div class="boss"><img src="pf/boss_nurarihyon.png" alt="누라리횬" loading="lazy"><div class="ch">CH.50</div><h4 class="serif">누라리횬</h4><span>백귀야행 총대장</span></div>
+          <div class="boss"><img src="pf/boss_yamata.png" alt="야마타노오로치" loading="lazy"><div class="ch">CH.75</div><h4 class="serif">야마타노오로치</h4><span>살아있는 재앙</span></div>
+          <div class="boss"><img src="pf/boss_yeomra.png" alt="염라" loading="lazy"><div class="ch">CH.100</div><h4 class="serif">염라</h4><span>명계의 왕</span></div>
+        </div>
+        <div class="yokai rv">
+          <div class="yo"><img src="pf/mob_gumiho.png" alt="구미호" loading="lazy"><span>구미호</span></div>
+          <div class="yo"><img src="pf/mob_gangshi.png" alt="강시" loading="lazy"><span>강시</span></div>
+          <div class="yo"><img src="pf/mob_bakeneko.png" alt="바케네코" loading="lazy"><span>바케네코</span></div>
+          <div class="yo"><img src="pf/mob_docheol.png" alt="도철" loading="lazy"><span>도철</span></div>
+        </div>
+        <p class="more-note">… 외 20종의 요괴가 백귀야행에 함께합니다.</p>
+      </div>
+    </div>
+
+    <!-- gacha -->
+    <div style="padding:100px 0">
+      <div class="wrap gacha">
+        <div class="box rv"><img src="pf/treasure_0.png" alt="영물 봉인함" loading="lazy"></div>
+        <div class="rv">
+          <p class="eyebrow" style="margin-bottom:10px">Collect &amp; Grow</p>
+          <h3 class="serif">봉인함 속에 잠든 영물</h3>
+          <p>쇠사슬과 부적으로 봉인된 함을 열면, 등급의 빛과 함께 영물의 정수가 깨어납니다. 개봉 연출부터 획득 팝업까지 — 모바일 수집형의 문법을 수묵과 금박으로 다시 썼습니다.</p>
+          <p style="color:var(--muted);font-size:13.5px">봉인함 · 아이콘 · 연출 이펙트 전량 생성형 아트 파이프라인 제작.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ ARCANE ═══════ -->
+  <section id="arcane">
+    <div class="wrap arcane">
+      <div class="arc-art rv"><canvas id="arcCanvas"></canvas><span class="badge">Coming Soon</span></div>
+      <div class="rv">
+        <p class="eyebrow" style="margin-bottom:10px">Next Title</p>
+        <h3 class="serif">아르케인 학원 <span style="font-size:.55em;color:var(--muted)">ARCANE ACADEMY</span></h3>
+        <p class="sub">마법 학원에서 시작되는 인연 — 감성 로맨스</p>
+        <p class="desc">마법 학원을 배경으로 캐릭터와의 관계를 쌓아가는 감성 로맨스 프로젝트. 호감도에 따라 갈라지는 이야기와 무드 일러스트를 준비하고 있습니다.</p>
+        <p class="note">※ 소개 문구·아트는 확정 후 갱신 예정입니다.</p>
+        <div class="tags"><span class="tag">스토리 로맨스</span><span class="tag">호감도 분기</span><span class="tag">캐릭터 일러스트</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ CONTACT ═══════ -->
+  <section class="contact" id="contact">
+    <div class="wrap rv">
+      <p class="eyebrow">Get in touch</p>
+      <h2 class="serif">함께 세계를 빚고 싶다면.</h2>
+      <p>협업 · 문의 · 소식은 아래로 연락 주세요.</p>
+      <a class="mail" href="mailto:chopsaltteokgames@gmail.com">chopsaltteokgames@gmail.com</a>
+    </div>
+  </section>
+
+  <footer>© 2026 찹살떡 게임즈 · Chopsaltteok Games — 쫀득하게 빚어낸 작은 세계들</footer>
+
+<script>
+(function(){
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function fit(c){ var r=c.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2);
+    c.width=Math.max(1,r.width*d); c.height=Math.max(1,r.height*d); return d; }
+
+  // hero starfield
+  var sky=document.getElementById("stars");
+  if(sky){ var sx=sky.getContext("2d"), sd=fit(sky), stars=[];
+    for(var i=0;i<150;i++) stars.push({x:Math.random(),y:Math.random(),r:(Math.random()*1.3+.2),p:Math.random()*6.28,s:Math.random()*.6+.2});
+    function drawSky(t){ sx.clearRect(0,0,sky.width,sky.height);
+      for(var i=0;i<stars.length;i++){var s=stars[i];var a=.3+.45*Math.sin(t*.001*s.s+s.p);
+        sx.beginPath();sx.arc(s.x*sky.width,s.y*sky.height,s.r*sd,0,6.28);
+        sx.fillStyle="rgba(245,217,139,"+a.toFixed(3)+")";sx.fill();}
+      if(!reduce) requestAnimationFrame(drawSky); }
+    requestAnimationFrame(drawSky);
+    addEventListener("resize",function(){sd=fit(sky);});
+  }
+
+  // arcane ambient
+  var ac=document.getElementById("arcCanvas");
+  if(ac){ var actx=ac.getContext('2d'), ad=fit(ac), motes=[];
+    for(var i=0;i<26;i++) motes.push({x:Math.random(),y:Math.random(),r:Math.random()*2.4+.6,vy:-(Math.random()*.02+.006),p:Math.random()*6.28});
+    function drawArc(t){ var w=ac.width,h=ac.height;
+      var g=actx.createLinearGradient(0,0,w,h); g.addColorStop(0,'#2a1430'); g.addColorStop(1,'#160a1e');
+      actx.fillStyle=g; actx.fillRect(0,0,w,h);
+      var rg=actx.createRadialGradient(w*.3,h*.34,0,w*.3,h*.34,Math.min(w,h)*.5);
+      rg.addColorStop(0,'rgba(217,143,180,.85)'); rg.addColorStop(.5,'rgba(255,255,255,0)');
+      actx.globalAlpha=.45; actx.fillStyle=rg; actx.beginPath(); actx.arc(w*.3,h*.34,Math.min(w,h)*.5,0,6.28); actx.fill(); actx.globalAlpha=1;
+      for(var i=0;i<motes.length;i++){var m=motes[i]; m.y+=m.vy; if(m.y<-.05){m.y=1.05;m.x=Math.random();}
+        var a=.25+.4*Math.sin(t*.002+m.p);
+        actx.beginPath(); actx.arc(m.x*w,m.y*h,m.r*ad,0,6.28);
+        actx.fillStyle="rgba(217,143,180,"+a.toFixed(3)+")"; actx.fill();}
+      if(!reduce) requestAnimationFrame(drawArc); }
+    requestAnimationFrame(drawArc);
+    addEventListener("resize",function(){ad=fit(ac);});
+  }
+
+  // scroll reveal
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
