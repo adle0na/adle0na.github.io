@@ -123,6 +123,14 @@
   .feat p{font-size:14px;color:var(--dim)}
 
   /* boss lineup */
+  /* 다국어 쇼케이스 — 같은 화면을 세 언어로 */
+  .langs{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  .lang{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--panel);text-align:center;
+    box-shadow:0 14px 40px rgba(0,0,0,.4);transition:transform .3s,border-color .3s}
+  .lang:hover{transform:translateY(-6px);border-color:var(--gold-dim)}
+  .lang img{width:100%;display:block}
+  .lang span{display:block;padding:14px 8px;font-size:14px;color:var(--dim);letter-spacing:.04em}
+
   .bosses{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
   .boss{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;text-align:center;
     background:radial-gradient(120% 90% at 50% 0%,#241f4d 0%,var(--surface) 70%);padding:26px 14px 22px;transition:transform .3s,border-color .3s}
@@ -155,6 +163,9 @@
   .arc-art{position:relative;min-height:320px;border-radius:22px;overflow:hidden;border:1px solid var(--line);
     background:linear-gradient(160deg,#2a1430,#160a1e)}
   .arc-art canvas{position:absolute;inset:0;width:100%;height:100%}
+  .arc-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+  .arc-art::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(22,10,30,.15) 0%,rgba(22,10,30,0) 45%,rgba(22,10,30,.55) 100%)}
   .arc-art .badge{position:absolute;top:16px;left:16px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
     padding:6px 13px;border-radius:999px;background:rgba(217,143,180,.15);color:var(--plum);border:1px solid rgba(217,143,180,.4)}
   .arcane h3{font-family:var(--serif);font-size:clamp(26px,3.6vw,38px);font-weight:800}
@@ -179,6 +190,9 @@
     .bosses{grid-template-columns:repeat(2,1fr)}
     .yokai{grid-template-columns:repeat(2,1fr)}
     .feats{grid-template-columns:1fr}
+    /* 세 언어는 나란히 놓여야 비교가 되므로 3열을 유지하고 간격만 줄인다 */
+    .langs{gap:10px}
+    .lang span{padding:10px 4px;font-size:12px}
     .hero-fox{opacity:.28}
   }
 </style>
@@ -238,7 +252,7 @@
         <img class="sol-logo" src="pf/logo_base.png" alt="SOLUNA 솔루나">
         <p class="sol-tag serif">달빛 아래, 백귀(百鬼)가 깨어난다.</p>
         <p class="sol-sub">달빛에 깨어난 백귀를 음(陰)과 양(陽)의 영물로 봉인하는 세로형 레인 디펜스 로그라이트.
-          진영 드래프트로 매 판이 달라지고, 30여 종 영물과 100챕터 · 대마 4보스가 끝까지 긴장을 끌고 갑니다.</p>
+          진영 드래프트로 매 판의 빌드가 달라지고, 30여 종 영물과 100챕터 · 대마 4보스가 끝까지 긴장을 끌고 갑니다.</p>
         <div class="chips">
           <span class="chip">음양 드래프트</span><span class="chip">100 챕터</span>
           <span class="chip">요괴 24종 + 대마 4종</span><span class="chip">영물 봉인함</span><span class="chip">수묵 · 금박 아트</span>
@@ -277,10 +291,10 @@
           <h2 class="serif">매 판이 달라지는 밤</h2>
         </div>
         <div class="feats rv">
-          <div class="feat"><span class="no">01</span><h4>음양(陰陽) 드래프트</h4><p>빛과 어둠, 두 진영의 영물을 골라 덱을 구성합니다. 픽마다 태극 게이지가 움직이고, 기운 쪽의 영물이 강해집니다 — 매 판 다른 빌드가 태어납니다.</p></div>
-          <div class="feat"><span class="no">02</span><h4>100 챕터 · 대마 4보스</h4><p>요괴 24종이 광폭화 이동 패턴으로 몰려오고, 25챕터마다 대마(大魔)가 고유 스킬로 판을 흔듭니다.</p></div>
-          <div class="feat"><span class="no">03</span><h4>영물 봉인함</h4><p>혼석으로 봉인함을 열어 영물의 정수를 모읍니다. 주간 확률업 로테이션과 30/100 천장으로 영급·신급 정수를 확정 획득.</p></div>
-          <div class="feat"><span class="no">04</span><h4>정수 · 파편 성장</h4><p>무기별 정수로 상위 영물을 해금하고, 파편으로 강화합니다. 진행도 보물상자 · 상점 · 출석이 재화 순환을 받칩니다.</p></div>
+          <div class="feat"><span class="no">01</span><h4>음양(陰陽) 드래프트</h4><p>음과 양, 두 진영의 영물 중 하나를 고를 때마다 태극 게이지가 기웁니다. 기운 쪽 영물은 강해지지만 반대편 영물은 저주에 걸려 약해지므로, 한쪽으로 몰지 균형을 지킬지가 매 판의 선택이 됩니다.</p></div>
+          <div class="feat"><span class="no">02</span><h4>개벽(開闢) — 판을 뒤집는 한 수</h4><p>기른 기운을 한 번에 터뜨리는 필살 버튼. 저주가 사라지고 기운 쪽 영물이 폭발적으로 강해지며, 중앙을 지켜 온 사람에게는 전 영물 강화라는 보상이 돌아옵니다. 요괴를 처치할수록 재사용이 빨라집니다.</p></div>
+          <div class="feat"><span class="no">03</span><h4>100 챕터 · 대마 4보스</h4><p>요괴 24종이 챕터마다 다른 대열로 몰려오고 이따금 광폭화로 속도를 올립니다. 25챕터마다 기다리는 대마(大魔)는 고유 스킬과 소환 압박으로 판을 흔듭니다.</p></div>
+          <div class="feat"><span class="no">04</span><h4>영물 봉인함 · 성장</h4><p>혼석으로 봉인함을 열어 정수를 모으고, 정수로 상위 영물을 해금해 파편으로 키웁니다. 주간 확률업과 30/100 천장이 수집의 끝을 보장합니다.</p></div>
         </div>
       </div>
     </div>
@@ -310,7 +324,7 @@
     </div>
 
     <!-- gacha -->
-    <div style="padding:100px 0">
+    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
       <div class="wrap gacha">
         <div class="box rv"><img src="pf/treasure_0.png" alt="영물 봉인함" loading="lazy"></div>
         <div class="rv">
@@ -321,19 +335,42 @@
         </div>
       </div>
     </div>
+
+    <!-- shipping readiness -->
+    <div style="padding:100px 0">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <p class="eyebrow">Built to Ship</p>
+          <h2 class="serif">내보낼 수 있는 상태로</h2>
+          <p>재미를 만드는 일과 별개로, 실제로 스토어에 올릴 때 필요한 것들을 함께 갖췄습니다.</p>
+        </div>
+        <div class="feats rv">
+          <div class="feat"><span class="no">01</span><h4>한국어 · 영어 · 일본어</h4><p>화면에 나오는 문구 589개를 세 언어로 옮겼습니다. 요괴와 영물의 이름, 스킬 설명까지 포함하며, 설정에서 언제든 바꿀 수 있습니다. 첫 실행에는 기기 언어를 따릅니다.</p></div>
+          <div class="feat"><span class="no">02</span><h4>재화 변조 방지</h4><p>골드 · 다이아 · 조각과 진행도를 보호 저장소에 담아, 메모리 편집이나 저장 파일 수정으로 값을 늘리는 가장 흔한 조작을 막았습니다.</p></div>
+          <div class="feat"><span class="no">03</span><h4>데이터로 잡은 난이도</h4><p>100챕터를 자동으로 순회하며 도달 한계를 기록하는 측정 도구를 만들어, 감이 아니라 수치로 곡선을 다듬었습니다. 난이도가 튀는 구간의 원인도 이 도구로 찾아냈습니다.</p></div>
+          <div class="feat"><span class="no">04</span><h4>세로 화면 · 한 손 조작</h4><p>드래그로 조준하고 놓으면 발사되는 단순한 조작. 노치와 안전 영역을 고려한 세로 레이아웃으로 안드로이드 실기에서 검증했습니다.</p></div>
+        </div>
+        <div class="langs rv">
+          <div class="lang"><img src="pf/l10n_ko.jpg" alt="한국어 화면" loading="lazy"><span>한국어</span></div>
+          <div class="lang"><img src="pf/l10n_en.jpg" alt="English screen" loading="lazy"><span>English</span></div>
+          <div class="lang"><img src="pf/l10n_ja.jpg" alt="日本語 화면" loading="lazy"><span>日本語</span></div>
+        </div>
+        <p class="more-note">같은 화면, 세 언어. 요괴와 영물의 이름까지 옮겼습니다.</p>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════ ARCANE ═══════ -->
   <section id="arcane">
     <div class="wrap arcane">
-      <div class="arc-art rv"><canvas id="arcCanvas"></canvas><span class="badge">Coming Soon</span></div>
+      <div class="arc-art rv"><img src="pf/arcane_key.jpg" alt="아르케인 아카데미 키 비주얼" loading="lazy"><span class="badge">Coming Soon</span></div>
       <div class="rv">
         <p class="eyebrow" style="margin-bottom:10px">Next Title</p>
-        <h3 class="serif">아르케인 학원 <span style="font-size:.55em;color:var(--muted)">ARCANE ACADEMY</span></h3>
-        <p class="sub">마법 학원에서 시작되는 인연 — 감성 로맨스</p>
-        <p class="desc">마법 학원을 배경으로 캐릭터와의 관계를 쌓아가는 감성 로맨스 프로젝트. 호감도에 따라 갈라지는 이야기와 무드 일러스트를 준비하고 있습니다.</p>
-        <p class="note">※ 소개 문구·아트는 확정 후 갱신 예정입니다.</p>
-        <div class="tags"><span class="tag">스토리 로맨스</span><span class="tag">호감도 분기</span><span class="tag">캐릭터 일러스트</span></div>
+        <h3 class="serif">아르케인 아카데미 <span style="font-size:.55em;color:var(--muted)">ARCANE ACADEMY</span></h3>
+        <p class="sub">비밀스러운 엘리트들과의 동행</p>
+        <p class="desc">마법 학원을 무대로 한 매치3 퍼즐 로맨스. 퍼즐을 풀어 이야기를 열고, 네 명의 공략 대상과 쌓은 호감도가 결말을 바꿉니다.</p>
+        <p class="note">※ 개발 중인 타이틀로, 소개 문구와 아트는 확정 후 갱신됩니다.</p>
+        <div class="tags"><span class="tag">매치3 퍼즐</span><span class="tag">호감도 분기</span><span class="tag">캐릭터 일러스트</span></div>
       </div>
     </div>
   </section>
@@ -369,24 +406,6 @@
     addEventListener("resize",function(){sd=fit(sky);});
   }
 
-  // arcane ambient
-  var ac=document.getElementById("arcCanvas");
-  if(ac){ var actx=ac.getContext('2d'), ad=fit(ac), motes=[];
-    for(var i=0;i<26;i++) motes.push({x:Math.random(),y:Math.random(),r:Math.random()*2.4+.6,vy:-(Math.random()*.02+.006),p:Math.random()*6.28});
-    function drawArc(t){ var w=ac.width,h=ac.height;
-      var g=actx.createLinearGradient(0,0,w,h); g.addColorStop(0,'#2a1430'); g.addColorStop(1,'#160a1e');
-      actx.fillStyle=g; actx.fillRect(0,0,w,h);
-      var rg=actx.createRadialGradient(w*.3,h*.34,0,w*.3,h*.34,Math.min(w,h)*.5);
-      rg.addColorStop(0,'rgba(217,143,180,.85)'); rg.addColorStop(.5,'rgba(255,255,255,0)');
-      actx.globalAlpha=.45; actx.fillStyle=rg; actx.beginPath(); actx.arc(w*.3,h*.34,Math.min(w,h)*.5,0,6.28); actx.fill(); actx.globalAlpha=1;
-      for(var i=0;i<motes.length;i++){var m=motes[i]; m.y+=m.vy; if(m.y<-.05){m.y=1.05;m.x=Math.random();}
-        var a=.25+.4*Math.sin(t*.002+m.p);
-        actx.beginPath(); actx.arc(m.x*w,m.y*h,m.r*ad,0,6.28);
-        actx.fillStyle="rgba(217,143,180,"+a.toFixed(3)+")"; actx.fill();}
-      if(!reduce) requestAnimationFrame(drawArc); }
-    requestAnimationFrame(drawArc);
-    addEventListener("resize",function(){ad=fit(ac);});
-  }
 
   // scroll reveal
   var io=new IntersectionObserver(function(es){
