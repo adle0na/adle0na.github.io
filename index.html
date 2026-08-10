@@ -43,9 +43,7 @@
     border-bottom:1px solid var(--line-soft)}
   .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:220px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:2;pointer-events:none}
   #stars{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-  .moon{position:absolute;top:8%;right:7%;width:210px;height:210px;border-radius:50%;z-index:1;opacity:.92;
-    background:radial-gradient(circle at 38% 38%,var(--gold-b),#C9A64B 55%,#7d651f 100%);
-    box-shadow:0 0 110px 30px rgba(230,179,74,.25)}
+  /* 앱아이콘 원화 안에 이미 보름달이 그려져 있어 CSS 달은 걷어냈다(달이 둘일 이유가 없다). */
   /* 앱아이콘은 정사각 불투명 그림이라 한쪽만 페이드하면 나머지 세 변이 각지게 드러난다.
      타원 마스크로 사방을 흘려보내 밤하늘에 스며들게 한다. */
   .hero-fox{position:absolute;right:-70px;bottom:-70px;width:min(46vw,560px);opacity:.5;z-index:1;
@@ -205,7 +203,6 @@
   <!-- ═══════ HERO ═══════ -->
   <header class="hero">
     <canvas id="stars"></canvas>
-    <div class="moon"></div>
     <img class="hero-fox" src="pf/app_icon.png" alt="">
     <div class="wrap">
       <div class="brand"><span class="seal">餅</span><span>CHOPSALTTEOK&nbsp;GAMES</span></div>
