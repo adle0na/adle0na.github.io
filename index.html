@@ -104,6 +104,10 @@
   .btn.primary{background:var(--gold);color:#0B0A18;border-color:var(--gold)}
   .btn:hover{transform:translateY(-2px)}
   .btn.primary:hover{background:var(--gold-b)}
+  /* 저장소가 비공개인 동안은 누를 것이 없다 — 눌리는 것처럼 보이면 404로 데려갈 뿐이다 */
+  .btn.static{cursor:default;background:rgba(230,179,74,.06);color:var(--gold);border-style:dashed}
+  .btn.static:hover{transform:none}
+  .btn.static .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.7}
   .sol-cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
 
   /* screenshots */
@@ -262,7 +266,7 @@
           <span><b>장르</b> 디펜스 · 로그라이트</span><span><b>1판</b> 약 2~4분</span>
         </div>
         <div class="sol-cta">
-          <a class="btn primary" href="https://github.com/adle0na/Mukryeong" target="_blank" rel="noopener">GitHub 저장소</a>
+          <span class="btn static" title="출시 준비 중이라 저장소를 비공개로 두고 있습니다"><span class="dot"></span>소스 저장소 · 비공개 (요청 시 열람)</span>
         </div>
       </div>
     </div>
