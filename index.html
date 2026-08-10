@@ -46,9 +46,12 @@
   .moon{position:absolute;top:8%;right:7%;width:210px;height:210px;border-radius:50%;z-index:1;opacity:.92;
     background:radial-gradient(circle at 38% 38%,var(--gold-b),#C9A64B 55%,#7d651f 100%);
     box-shadow:0 0 110px 30px rgba(230,179,74,.25)}
-  .hero-fox{position:absolute;right:-40px;bottom:-30px;width:min(46vw,560px);opacity:.5;z-index:1;
+  /* 앱아이콘은 정사각 불투명 그림이라 한쪽만 페이드하면 나머지 세 변이 각지게 드러난다.
+     타원 마스크로 사방을 흘려보내 밤하늘에 스며들게 한다. */
+  .hero-fox{position:absolute;right:-70px;bottom:-70px;width:min(46vw,560px);opacity:.5;z-index:1;
     filter:drop-shadow(0 0 60px rgba(230,179,74,.12));pointer-events:none;
-    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 30%);mask-image:linear-gradient(to top,transparent 0%,#000 30%)}
+    -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 34%,rgba(0,0,0,.55) 56%,transparent 74%);
+    mask-image:radial-gradient(ellipse at 50% 45%,#000 34%,rgba(0,0,0,.55) 56%,transparent 74%)}
   .hero .wrap{position:relative;z-index:3;padding-top:80px;padding-bottom:120px}
   .brand{display:inline-flex;align-items:center;gap:13px;margin-bottom:30px}
   .seal{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--gold);display:grid;place-items:center;
@@ -203,7 +206,7 @@
   <header class="hero">
     <canvas id="stars"></canvas>
     <div class="moon"></div>
-    <img class="hero-fox" src="pf/mob_gumiho.png" alt="">
+    <img class="hero-fox" src="pf/app_icon.png" alt="">
     <div class="wrap">
       <div class="brand"><span class="seal">餅</span><span>CHOPSALTTEOK&nbsp;GAMES</span></div>
       <p class="eyebrow">Korean folklore &amp; romance games</p>
