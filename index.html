@@ -43,13 +43,12 @@
     border-bottom:1px solid var(--line-soft)}
   .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:220px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:2;pointer-events:none}
   #stars{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-  /* 앱아이콘 원화 안에 이미 보름달이 그려져 있어 CSS 달은 걷어냈다(달이 둘일 이유가 없다). */
-  /* 앱아이콘은 정사각 불투명 그림이라 한쪽만 페이드하면 나머지 세 변이 각지게 드러난다.
-     타원 마스크로 사방을 흘려보내 밤하늘에 스며들게 한다. */
-  .hero-fox{position:absolute;right:-70px;bottom:-70px;width:min(46vw,560px);opacity:.5;z-index:1;
+  .moon{position:absolute;top:8%;right:7%;width:210px;height:210px;border-radius:50%;z-index:1;opacity:.92;
+    background:radial-gradient(circle at 38% 38%,var(--gold-b),#C9A64B 55%,#7d651f 100%);
+    box-shadow:0 0 110px 30px rgba(230,179,74,.25)}
+  .hero-fox{position:absolute;right:-40px;bottom:-30px;width:min(46vw,560px);opacity:.5;z-index:1;
     filter:drop-shadow(0 0 60px rgba(230,179,74,.12));pointer-events:none;
-    -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 34%,rgba(0,0,0,.55) 56%,transparent 74%);
-    mask-image:radial-gradient(ellipse at 50% 45%,#000 34%,rgba(0,0,0,.55) 56%,transparent 74%)}
+    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 30%);mask-image:linear-gradient(to top,transparent 0%,#000 30%)}
   .hero .wrap{position:relative;z-index:3;padding-top:80px;padding-bottom:120px}
   .brand{display:inline-flex;align-items:center;gap:13px;margin-bottom:30px}
   .seal{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--gold);display:grid;place-items:center;
@@ -104,10 +103,6 @@
   .btn.primary{background:var(--gold);color:#0B0A18;border-color:var(--gold)}
   .btn:hover{transform:translateY(-2px)}
   .btn.primary:hover{background:var(--gold-b)}
-  /* 저장소가 비공개인 동안은 누를 것이 없다 — 눌리는 것처럼 보이면 404로 데려갈 뿐이다 */
-  .btn.static{cursor:default;background:rgba(230,179,74,.06);color:var(--gold);border-style:dashed}
-  .btn.static:hover{transform:none}
-  .btn.static .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.7}
   .sol-cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
 
   /* screenshots */
@@ -207,7 +202,8 @@
   <!-- ═══════ HERO ═══════ -->
   <header class="hero">
     <canvas id="stars"></canvas>
-    <img class="hero-fox" src="pf/app_icon.png" alt="">
+    <div class="moon"></div>
+    <img class="hero-fox" src="pf/mob_gumiho.png" alt="">
     <div class="wrap">
       <div class="brand"><span class="seal">餅</span><span>CHOPSALTTEOK&nbsp;GAMES</span></div>
       <p class="eyebrow">Korean folklore &amp; romance games</p>
@@ -266,7 +262,7 @@
           <span><b>장르</b> 디펜스 · 로그라이트</span><span><b>1판</b> 약 2~4분</span>
         </div>
         <div class="sol-cta">
-          <span class="btn static" title="출시 준비 중이라 저장소를 비공개로 두고 있습니다"><span class="dot"></span>소스 저장소 · 비공개 (요청 시 열람)</span>
+          <a class="btn primary" href="https://github.com/adle0na/Mukryeong" target="_blank" rel="noopener">GitHub 저장소</a>
         </div>
       </div>
     </div>
@@ -389,7 +385,8 @@
     </div>
   </section>
 
-  <footer>© 2026 찹살떡 게임즈 · Chopsaltteok Games — 쫀득하게 빚어낸 작은 세계들</footer>
+  <footer>© 2026 찹살떡 게임즈 · Chopsaltteok Games — 쫀득하게 빚어낸 작은 세계들
+    <br><a class="mail" href="/privacy.html" style="font-size:12.5px">개인정보처리방침 · Privacy Policy</a></footer>
 
 <script>
 (function(){
