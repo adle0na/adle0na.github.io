@@ -1,419 +1,125 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>찹살떡 게임즈 — Chopsaltteok Games</title>
-<meta name="description" content="한국의 밤과 이야기를 소재로, AI와 함께 게임을 빚는 1인 인디 스튜디오. 솔루나(SOLUNA) — 백귀야행 디펜스 로그라이트 제작 중.">
-<meta property="og:title" content="찹살떡 게임즈 — Chopsaltteok Games">
-<meta property="og:description" content="백귀야행 디펜스 로그라이트 '솔루나' 를 만드는 AI 협업 1인 스튜디오">
-<meta property="og:image" content="pf/title_bg.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;800;900&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌕</text></svg>">
-<style>
-  :root{
-    --bg:#0B0A18; --bg2:#12102400; --surface:#161430; --panel:#1B1938; --panel2:#232050;
-    --line:#332F5E; --line-soft:#282454;
-    --gold:#E6B34A; --gold-b:#F5D98B; --gold-dim:#8f7838;
-    --plum:#D98FB4; --jade:#5FB58C; --crimson:#D9534F;
-    --text:#F3ECDD; --dim:#B7B0CC; --muted:#8F87AC;
-    --serif:"Noto Serif KR","Iowan Old Style",Georgia,serif;
-    --sans:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
-    --maxw:1120px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  ::selection{background:var(--gold);color:#0B0A18}
-  a{color:inherit}
-  img{max-width:100%;display:block}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .serif{font-family:var(--serif)}
-  .eyebrow{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700}
-
-  /* reveal on scroll */
-  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
-  .rv.on{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){ .rv{opacity:1;transform:none;transition:none} *{animation:none!important} }
-
-  /* ───────── hero ───────── */
-  .hero{position:relative;min-height:96vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;
-    border-bottom:1px solid var(--line-soft)}
-  .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:220px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:2;pointer-events:none}
-  #stars{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-  .moon{position:absolute;top:8%;right:7%;width:210px;height:210px;border-radius:50%;z-index:1;opacity:.92;
-    background:radial-gradient(circle at 38% 38%,var(--gold-b),#C9A64B 55%,#7d651f 100%);
-    box-shadow:0 0 110px 30px rgba(230,179,74,.25)}
-  .hero-fox{position:absolute;right:-40px;bottom:-30px;width:min(46vw,560px);opacity:.5;z-index:1;
-    filter:drop-shadow(0 0 60px rgba(230,179,74,.12));pointer-events:none;
-    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 30%);mask-image:linear-gradient(to top,transparent 0%,#000 30%)}
-  .hero .wrap{position:relative;z-index:3;padding-top:80px;padding-bottom:120px}
-  .brand{display:inline-flex;align-items:center;gap:13px;margin-bottom:30px}
-  .seal{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--gold);display:grid;place-items:center;
-    color:var(--gold);font-family:var(--serif);font-size:23px;font-weight:800;background:rgba(230,179,74,.07)}
-  .brand span{font-weight:600;letter-spacing:.06em;color:var(--dim);font-size:15px}
-  h1.title{font-family:var(--serif);font-weight:900;font-size:clamp(46px,8vw,96px);line-height:1.04;letter-spacing:-.015em}
-  h1.title em{font-style:normal;color:var(--gold-b);display:block}
-  .lede{margin-top:24px;max-width:42ch;font-size:clamp(16px,2vw,20px);color:var(--dim)}
-  .hero-meta{margin-top:38px;display:flex;flex-wrap:wrap;gap:10px 30px;font-size:13.5px;color:var(--muted)}
-  .hero-meta b{color:var(--text);font-weight:600}
-  .scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;color:var(--muted);font-size:12px;letter-spacing:.2em;animation:cue 2.4s ease-in-out infinite}
-  @keyframes cue{0%,100%{transform:translate(-50%,0);opacity:.55}50%{transform:translate(-50%,8px);opacity:1}}
-
-  /* ───────── section shell ───────── */
-  section{padding:110px 0;border-bottom:1px solid var(--line-soft);position:relative}
-  .sec-head{margin-bottom:52px}
-  .sec-head h2{font-family:var(--serif);font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em;margin-top:10px}
-  .sec-head p{color:var(--muted);font-size:15px;margin-top:10px;max-width:56ch}
-
-  /* ───────── studio / stats ───────── */
-  .studio{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
-  .studio-copy p{color:var(--dim);font-size:16.5px;margin-bottom:18px;max-width:58ch}
-  .studio-copy strong{color:var(--text)}
-  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:30px}
-  .stat{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:var(--panel)}
-  .stat b{display:block;font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:800;color:var(--gold-b);line-height:1.1}
-  .stat span{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
-  .caps{display:flex;flex-direction:column;gap:14px}
-  .cap{padding:20px 22px;border:1px solid var(--line);border-radius:16px;background:var(--panel);transition:border-color .25s}
-  .cap:hover{border-color:var(--gold-dim)}
-  .cap h4{font-size:15px;color:var(--gold);margin-bottom:6px;letter-spacing:.02em}
-  .cap p{font-size:14px;color:var(--dim)}
-  .pipe{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:12.5px;color:var(--muted)}
-  .pipe i{font-style:normal;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--panel2);color:var(--dim)}
-  .pipe s{text-decoration:none;color:var(--gold-dim)}
-
-  /* ───────── soluna showcase ───────── */
-  #soluna{padding-top:0;border-bottom:none}
-  .sol-hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line-soft);padding:130px 0 90px}
-  .sol-hero .bgimg{position:absolute;inset:0;background:url(pf/title_bg.jpg) center 22%/cover no-repeat;opacity:.34;
-    -webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 96%);mask-image:linear-gradient(to bottom,#000 30%,transparent 96%)}
-  .sol-hero .wrap{position:relative;z-index:2}
-  .sol-logo{max-width:min(520px,80vw);margin-bottom:8px;filter:drop-shadow(0 6px 30px rgba(0,0,0,.6))}
-  .sol-tag{font-family:var(--serif);font-weight:800;font-size:clamp(20px,3vw,28px);color:var(--gold-b);margin-top:6px}
-  .sol-sub{color:var(--dim);max-width:60ch;margin-top:14px;font-size:16px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-  .chip{font-size:12.5px;padding:6px 13px;border-radius:999px;border:1px solid rgba(230,179,74,.35);color:var(--gold-b);background:rgba(230,179,74,.08)}
-  .sol-specs{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:20px;font-size:13.5px;color:var(--muted)}
-  .sol-specs b{color:var(--text);font-weight:600}
-  .btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:12px 22px;border-radius:12px;
-    text-decoration:none;border:1px solid var(--line);color:var(--text);transition:.18s}
-  .btn.primary{background:var(--gold);color:#0B0A18;border-color:var(--gold)}
-  .btn:hover{transform:translateY(-2px)}
-  .btn.primary:hover{background:var(--gold-b)}
-  .sol-cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
-
-  /* screenshots */
-  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-  .shot{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);background:var(--panel);
-    box-shadow:0 18px 50px rgba(0,0,0,.45);transition:transform .3s cubic-bezier(.2,.7,.3,1),box-shadow .3s}
-  .shot:hover{transform:translateY(-8px);box-shadow:0 30px 70px rgba(0,0,0,.6)}
-  .shot img{width:100%;aspect-ratio:9/16;object-fit:cover}
-  .shot figcaption{position:absolute;inset:auto 0 0 0;padding:34px 14px 12px;font-size:12.5px;color:var(--text);
-    background:linear-gradient(to top,rgba(0,0,0,.78),transparent);letter-spacing:.03em;text-align:center}
-
-  /* feature grid */
-  .feats{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  .feat{border:1px solid var(--line);border-radius:18px;padding:26px 28px;background:linear-gradient(160deg,var(--panel),var(--surface));transition:border-color .25s}
-  .feat:hover{border-color:var(--gold-dim)}
-  .feat .no{font-family:var(--serif);font-weight:800;color:var(--gold-dim);font-size:13px;letter-spacing:.2em}
-  .feat h4{font-family:var(--serif);font-size:20px;font-weight:800;margin:8px 0 8px;color:var(--text)}
-  .feat p{font-size:14px;color:var(--dim)}
-
-  /* boss lineup */
-  /* 다국어 쇼케이스 — 같은 화면을 세 언어로 */
-  .langs{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
-  .lang{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--panel);text-align:center;
-    box-shadow:0 14px 40px rgba(0,0,0,.4);transition:transform .3s,border-color .3s}
-  .lang:hover{transform:translateY(-6px);border-color:var(--gold-dim)}
-  .lang img{width:100%;display:block}
-  .lang span{display:block;padding:14px 8px;font-size:14px;color:var(--dim);letter-spacing:.04em}
-
-  .bosses{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-  .boss{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;text-align:center;
-    background:radial-gradient(120% 90% at 50% 0%,#241f4d 0%,var(--surface) 70%);padding:26px 14px 22px;transition:transform .3s,border-color .3s}
-  .boss:hover{transform:translateY(-6px);border-color:rgba(217,83,79,.55)}
-  .boss img{width:82%;margin:0 auto;filter:drop-shadow(0 12px 26px rgba(0,0,0,.55));transition:transform .4s}
-  .boss:hover img{transform:scale(1.06)}
-  .boss .ch{font-size:11px;letter-spacing:.22em;color:var(--crimson);font-weight:700;margin-top:14px}
-  .boss h4{font-family:var(--serif);font-size:19px;font-weight:800;margin-top:4px}
-  .boss span{font-size:12.5px;color:var(--muted)}
-
-  /* yokai strip */
-  .yokai{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:22px}
-  .yo{border:1px solid var(--line-soft);border-radius:16px;background:var(--panel);padding:16px 10px 14px;text-align:center;transition:transform .25s}
-  .yo:hover{transform:translateY(-4px)}
-  .yo img{width:74%;margin:0 auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}
-  .yo span{display:block;font-size:12.5px;color:var(--dim);margin-top:10px;letter-spacing:.06em}
-  .more-note{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;letter-spacing:.04em}
-
-  /* gacha strip */
-  .gacha{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center}
-  .gacha .box{display:grid;place-items:center;padding:30px;border:1px solid var(--line);border-radius:22px;
-    background:radial-gradient(90% 80% at 50% 30%,#2a2140 0%,var(--surface) 75%)}
-  .gacha .box img{width:min(260px,60%);filter:drop-shadow(0 20px 40px rgba(0,0,0,.55));animation:bob 4.2s ease-in-out infinite}
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-  .gacha h3{font-family:var(--serif);font-size:clamp(24px,3.4vw,34px);font-weight:800;margin-bottom:14px}
-  .gacha p{color:var(--dim);font-size:15.5px;margin-bottom:12px;max-width:52ch}
-
-  /* ───────── arcane ───────── */
-  .arcane{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-  .arc-art{position:relative;min-height:320px;border-radius:22px;overflow:hidden;border:1px solid var(--line);
-    background:linear-gradient(160deg,#2a1430,#160a1e)}
-  .arc-art canvas{position:absolute;inset:0;width:100%;height:100%}
-  .arc-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
-  .arc-art::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,rgba(22,10,30,.15) 0%,rgba(22,10,30,0) 45%,rgba(22,10,30,.55) 100%)}
-  .arc-art .badge{position:absolute;top:16px;left:16px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-    padding:6px 13px;border-radius:999px;background:rgba(217,143,180,.15);color:var(--plum);border:1px solid rgba(217,143,180,.4)}
-  .arcane h3{font-family:var(--serif);font-size:clamp(26px,3.6vw,38px);font-weight:800}
-  .arcane .sub{color:var(--plum);font-size:15.5px;font-weight:500;margin-top:8px}
-  .arcane .desc{color:var(--dim);font-size:15px;margin-top:14px;max-width:52ch}
-  .note{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px}
-  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-  .tag{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:var(--panel2)}
-
-  /* ───────── contact ───────── */
-  .contact{text-align:center;padding:120px 0;border-bottom:none}
-  .contact h2{font-family:var(--serif);font-size:clamp(28px,5vw,48px);font-weight:800;margin:12px 0 14px}
-  .contact p{color:var(--dim);max-width:46ch;margin:0 auto 30px}
-  .mail{display:inline-flex;align-items:center;gap:10px;font-size:clamp(17px,2.6vw,22px);font-weight:700;color:var(--gold-b);
-    text-decoration:none;padding:14px 26px;border:1px solid var(--gold);border-radius:14px;transition:.18s}
-  .mail:hover{background:var(--gold);color:#0B0A18}
-  footer{padding:38px 0;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line-soft)}
-
-  @media (max-width:900px){
-    .studio,.gacha,.arcane{grid-template-columns:1fr;gap:36px}
-    .shots{grid-template-columns:repeat(2,1fr)}
-    .bosses{grid-template-columns:repeat(2,1fr)}
-    .yokai{grid-template-columns:repeat(2,1fr)}
-    .feats{grid-template-columns:1fr}
-    /* 세 언어는 나란히 놓여야 비교가 되므로 3열을 유지하고 간격만 줄인다 */
-    .langs{gap:10px}
-    .lang span{padding:10px 4px;font-size:12px}
-    .hero-fox{opacity:.28}
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10191b">
+  <title>찹살떡 게임즈 | SOLUNA · 작은 스튜디오, 오래 남는 세계</title>
+  <meta name="description" content="찹살떡 게임즈 공식 홈페이지. 해태와 달토끼가 함께하는 동양 판타지 디펜스 SOLUNA와 마법 학원의 퍼즐 로맨스 아르케인 아카데미를 만나보세요.">
+  <link rel="canonical" href="https://adle0na.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="Chopsaltteok Games">
+  <meta property="og:title" content="SOLUNA — 밤을 가르고, 운명을 고르다.">
+  <meta property="og:description" content="해태와 달토끼, 그리고 당신의 선택. 찹살떡 게임즈의 동양 판타지 디펜스 SOLUNA.">
+  <meta property="og:url" content="https://adle0na.github.io/">
+  <meta property="og:image" content="https://adle0na.github.io/pf/site-share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SOLUNA, 해태와 달토끼와 함께하는 부적사의 백귀야행">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="pf/studio-mark.svg">
+  <link rel="preload" as="image" href="pf/hero-key.webp" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css?v=20260924">
+  <script src="site.js?v=20260924" defer></script>
 </head>
 <body>
-
-  <!-- ═══════ HERO ═══════ -->
-  <header class="hero">
-    <canvas id="stars"></canvas>
-    <div class="moon"></div>
-    <img class="hero-fox" src="pf/mob_gumiho.png" alt="">
-    <div class="wrap">
-      <div class="brand"><span class="seal">餅</span><span>CHOPSALTTEOK&nbsp;GAMES</span></div>
-      <p class="eyebrow">Korean folklore &amp; romance games</p>
-      <h1 class="title serif">쫀득하게 빚어낸<em>작은 세계들.</em></h1>
-      <p class="lede">찹살떡 게임즈는 한국의 밤과 이야기를 소재로, AI와 함께 게임을 빚는 1인 인디 스튜디오입니다.</p>
-      <div class="hero-meta">
-        <span><b>제작</b> Unity · 모바일</span>
-        <span><b>방식</b> AI 협업 파이프라인</span>
-        <span><b>지금</b> 2개 타이틀 제작 중</span>
-      </div>
+<a class="skip-link" href="#main">본문으로 바로가기</a>
+<header class="site-header">
+  <div class="nav-shell">
+    <a class="brand" href="#top" aria-label="찹살떡 게임즈 처음으로">
+      <span class="brand-mark" aria-hidden="true">찹</span>
+      <span class="brand-name">CHOPSALTTEOK<span>G A M E S</span></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span class="sr-only">메뉴 열기</span></button>
+    <nav id="main-nav" aria-label="주 메뉴">
+      <a href="#soluna">솔루나</a><a href="#world">세계관</a><a href="#games">게임</a><a href="#studio">스튜디오</a>
+      <a class="nav-contact" href="#contact">문의하기 <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-art" aria-hidden="true"><img src="pf/hero-key.webp" width="941" height="1672" alt="" fetchpriority="high"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-content shell">
+      <p class="eyebrow hero-eyebrow"><span></span> CHOPSALTTEOK GAMES PRESENTS</p>
+      <img class="soluna-logo" src="pf/soluna-logo.webp" alt="SOLUNA" width="1000" height="333">
+      <h1 id="hero-title">밤을 가르고,<br>운명을 고르다.</h1>
+      <p class="hero-description">백귀가 깨어나는 밤.<br>해태와 달토끼, 그리고 당신의 선택이<br class="mobile-break"> 세상을 지킵니다.</p>
+      <div class="hero-actions"><a class="button button-gold" href="#soluna">솔루나 살펴보기 <span aria-hidden="true">↗</span></a><a class="text-link" href="#screens">게임 화면 보기 <span aria-hidden="true">→</span></a></div>
+      <p class="availability"><span class="status-dot"></span> Android <span class="separator">/</span> 출시 준비 중</p>
     </div>
-    <div class="scroll-cue">SCROLL ▾</div>
-  </header>
+    <div class="hero-bottom shell"><span>01 <i></i> SOLUNA</span><span class="hero-genre">동양 판타지 디펜스</span><a href="#soluna">아래로 둘러보기 <span aria-hidden="true">↓</span></a></div>
+    <button class="motion-toggle" type="button" aria-pressed="false" aria-label="배경 움직임 멈추기"><span aria-hidden="true">Ⅱ</span><span class="motion-label">움직임 멈추기</span></button>
+  </section>
 
-  <!-- ═══════ STUDIO ═══════ -->
-  <section id="studio">
-    <div class="wrap studio">
-      <div class="studio-copy rv">
-        <p class="eyebrow" style="margin-bottom:16px">Studio · AI Pipeline</p>
-        <p><strong>작지만 단단하게.</strong> 기획·프로그래밍·아트를 한 사람이 맡되, AI 에이전트와 생성형 아트를 파이프라인에 녹여 <strong>상용급 볼륨을 짧은 주기</strong>로 만들어 냅니다.</p>
-        <p>대화형 AI 에이전트가 C# 시스템 코드를 함께 구현하고, 생성형 아트는 <strong>프롬프트 → 크로마키 추출 → 파츠 분할 → 엔진 임포트</strong>의 자동화 파이프라인을 거쳐 게임에 들어갑니다. 사람은 방향을 정하고, 검수하고, 세계관을 지킵니다.</p>
-        <div class="pipe">
-          <i>프롬프트 설계</i><s>→</s><i>이미지 생성</i><s>→</s><i>크로마키·컷</i><s>→</s><i>파츠 분할·리깅</i><s>→</s><i>엔진 임포트</i>
-        </div>
-        <div class="stats">
-          <div class="stat"><b>1인 × AI</b><span>기획 · 코드 · 아트 전 공정</span></div>
-          <div class="stat"><b>5주</b><span>솔루나 코어 개발 기간</span></div>
-          <div class="stat"><b>300+</b><span>AI 생성 아트 리소스</span></div>
-          <div class="stat"><b>100</b><span>챕터 · 대마 4보스</span></div>
-        </div>
+  <section class="game-intro paper" id="soluna" aria-labelledby="game-title">
+    <div class="shell">
+      <div class="section-topline"><span class="eyebrow">01 / OUR FIRST WORLD</span><span class="small-label">SOLUNA · 솔루나</span></div>
+      <div class="intro-heading"><h2 id="game-title">한 번의 선택이,<br><em>전장을 바꾼다.</em></h2><div><p>밀려오는 요괴의 행렬, 쌓여가는 영물의 힘.<br>서로 다른 영물을 조합하고 강화를 골라<br>당신만의 돌파구를 만들어 보세요.</p><a class="text-link dark-link" href="#screens">실제 게임 화면 살펴보기 <span aria-hidden="true">↘</span></a></div></div>
+      <div class="feature-list">
+        <article><span class="feature-number">01</span><h3>고르고, 조합하고, 각성하다.</h3><p>몰려오는 적을 한 번에 쓸어버릴지,<br>움직임을 늦추고 집중 공격할지.<br>영물과 시너지가 나만의 전술이 됩니다.</p><span class="feature-tag">영물 선택 &amp; 시너지</span></article>
+        <article><span class="feature-number">02</span><h3>둘의 힘이 하나가 되는 순간.</h3><p>해태와 달토끼의 힘이 모이면 음양합일.<br>두 영물이 일월수로 합쳐져<br>10초 동안 영물의 공격을 강화합니다.</p><span class="feature-tag">해태 · 달토끼 · 일월수</span></article>
+        <article><span class="feature-number">03</span><h3>백 개의 관문, 끝나지 않는 도전.</h3><p>각기 다른 요괴와 네 대마를 넘어<br>더 높은 난이도에 도전하세요.<br>수련과 별자리로 다음 전투를 준비합니다.</p><span class="feature-tag">100개 챕터 &amp; 성장</span></article>
       </div>
-      <div class="caps rv">
-        <div class="cap"><h4>AI 에이전트 개발</h4><p>전투 시스템 · 메타 경제 · UI를 대화형 에이전트와 반복 구현. 코드 리뷰와 플레이 검증까지 에이전트가 수행합니다.</p></div>
-        <div class="cap"><h4>생성형 아트 파이프라인</h4><p>요괴 24종 + 대마 4종, 영물 30여 종, 배경·VFX·UI 전량을 생성형 아트로 제작하고 자동 후처리로 게임에 통합.</p></div>
-        <div class="cap"><h4>세계관 우선 디자인</h4><p>백귀야행 · 수묵 · 금박 — 작품마다 팔레트·타이포·모티프를 새로 세워 템플릿 느낌을 피합니다.</p></div>
+      <div class="game-facts"><span><strong>100</strong> 챕터</span><span><strong>4</strong> 대마</span><span><strong>30</strong> 영물</span><span class="fact-platform">ANDROID<span>세로형 디펜스 · 로그라이트</span></span></div>
+    </div>
+  </section>
+
+  <section class="demons" id="world" aria-labelledby="world-title">
+    <div class="shell">
+      <div class="section-topline"><span class="eyebrow">02 / BEYOND THE NIGHT</span><span class="small-label">백귀야행의 끝에서</span></div>
+      <div class="world-heading"><h2 id="world-title">밤에는,<br>주인이 있다.</h2><p>당신의 길을 가로막는 네 대마.<br>아름답고도 위험한 존재들과 마주하세요.</p></div>
+      <div class="boss-stage" data-boss="shuten">
+        <div class="boss-ring" aria-hidden="true"><span></span></div>
+        <div class="boss-watermark" aria-hidden="true">大魔</div>
+        <div class="boss-tabs" role="tablist" aria-label="네 대마 선택">
+          <button type="button" id="boss-tab-shuten" role="tab" aria-selected="true" aria-controls="boss-panel" data-boss="shuten"><span>Ⅰ</span>슈텐도지<i>CH.25</i></button>
+          <button type="button" id="boss-tab-nura" role="tab" aria-selected="false" aria-controls="boss-panel" tabindex="-1" data-boss="nura"><span>Ⅱ</span>누라리횬<i>CH.50</i></button>
+          <button type="button" id="boss-tab-orochi" role="tab" aria-selected="false" aria-controls="boss-panel" tabindex="-1" data-boss="orochi"><span>Ⅲ</span>오로치<i>CH.75</i></button>
+          <button type="button" id="boss-tab-yeomra" role="tab" aria-selected="false" aria-controls="boss-panel" tabindex="-1" data-boss="yeomra"><span>Ⅳ</span>염라<i>CH.100</i></button>
+        </div>
+        <div class="boss-panel" id="boss-panel" role="tabpanel" aria-labelledby="boss-tab-shuten" tabindex="0">
+          <div class="boss-art-wrap"><img id="boss-art" src="pf/boss-shuten.webp" alt="붉은 술병과 거대한 방망이를 든 슈텐도지" width="960" height="960" loading="lazy"></div>
+          <div class="boss-caption"><span id="boss-chapter" class="eyebrow">THE FIRST DEMON / CHAPTER 25</span><h3 id="boss-name">슈텐도지</h3><span id="boss-english">SHUTEN DOJI</span><div class="caption-rule"></div><p id="boss-description">붉은 밤을 거느리는 오니의 왕.<br>거대한 방망이 아래, 첫 시련이 시작됩니다.</p></div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SOLUNA ═══════ -->
-  <section id="soluna">
-    <div class="sol-hero">
-      <div class="bgimg"></div>
-      <div class="wrap rv">
-        <p class="eyebrow">Flagship Title · In Development</p>
-        <img class="sol-logo" src="pf/logo_base.png" alt="SOLUNA 솔루나">
-        <p class="sol-tag serif">달빛 아래, 백귀(百鬼)가 깨어난다.</p>
-        <p class="sol-sub">달빛에 깨어난 백귀를 음(陰)과 양(陽)의 영물로 봉인하는 세로형 레인 디펜스 로그라이트.
-          진영 드래프트로 매 판의 빌드가 달라지고, 30여 종 영물과 100챕터 · 대마 4보스가 끝까지 긴장을 끌고 갑니다.</p>
-        <div class="chips">
-          <span class="chip">음양 드래프트</span><span class="chip">100 챕터</span>
-          <span class="chip">요괴 24종 + 대마 4종</span><span class="chip">영물 봉인함</span><span class="chip">수묵 · 금박 아트</span>
-        </div>
-        <div class="sol-specs">
-          <span><b>플랫폼</b> Android</span><span><b>엔진</b> Unity 6000.3</span>
-          <span><b>장르</b> 디펜스 · 로그라이트</span><span><b>1판</b> 약 2~4분</span>
-        </div>
-        <div class="sol-cta">
-          <a class="btn primary" href="https://github.com/adle0na/Mukryeong" target="_blank" rel="noopener">GitHub 저장소</a>
-        </div>
+  <section class="screens-section" id="screens" aria-labelledby="screens-title">
+    <div class="shell">
+      <div class="section-topline"><span class="eyebrow">03 / IN THE GAME</span><span class="small-label">실제 플레이 화면</span></div>
+      <div class="screens-heading"><h2 id="screens-title">손끝에서 펼쳐지는<br><em>당신의 백귀야행.</em></h2><p>한 손 안에 담긴 전투와 수집, 그리고 성장.<br>화면을 눌러 자세히 살펴보세요.</p></div>
+      <div class="screens-grid">
+        <a class="screen-card" href="pf/screen-combat.webp" data-gallery data-caption="요괴의 행렬에 맞서는 전투"><span class="screen-frame"><img src="pf/screen-combat.webp" alt="해태와 달토끼가 요괴 행렬에 맞서는 솔루나 전투 화면" width="540" height="1170" loading="lazy"><span class="zoom-icon" aria-hidden="true">↗</span></span><span class="screen-label"><b>01</b> 행렬을 막아내는 전투 <i aria-hidden="true">↗</i></span></a>
+        <a class="screen-card" href="pf/screen-draft.webp" data-gallery data-caption="매 순간 달라지는 선택 — 영물 강화"><span class="screen-frame"><img src="pf/screen-draft.webp" alt="전투 중 영물 강화 옵션을 고르는 두루마리 선택 화면" width="540" height="1170" loading="lazy"><span class="zoom-icon" aria-hidden="true">↗</span></span><span class="screen-label"><b>02</b> 매 순간 달라지는 선택 <i aria-hidden="true">↗</i></span></a>
+        <a class="screen-card" href="pf/screen-gacha.webp" data-gallery data-caption="새로운 영물과의 만남 — 영물 봉인함"><span class="screen-frame"><img src="pf/screen-gacha.webp" alt="영물 봉인함에서 영물을 소환하는 화면" width="540" height="1170" loading="lazy"><span class="zoom-icon" aria-hidden="true">↗</span></span><span class="screen-label"><b>03</b> 새로운 영물과의 만남 <i aria-hidden="true">↗</i></span></a>
+        <a class="screen-card" href="pf/screen-stars.webp" data-gallery data-caption="별을 깨워 이어가는 성장 — 별자리"><span class="screen-frame"><img src="pf/screen-stars.webp" alt="별자리의 힘을 강화하는 솔루나 별자리 화면" width="540" height="1170" loading="lazy"><span class="zoom-icon" aria-hidden="true">↗</span></span><span class="screen-label"><b>04</b> 별을 깨워 이어가는 성장 <i aria-hidden="true">↗</i></span></a>
       </div>
-    </div>
-
-    <!-- screenshots -->
-    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
-      <div class="wrap">
-        <div class="sec-head rv">
-          <p class="eyebrow">In-Game</p>
-          <h2 class="serif">스크린샷</h2>
-        </div>
-        <div class="shots rv">
-          <figure class="shot"><img src="pf/shot_main.jpg" alt="메인 화면" loading="lazy"><figcaption>메인 — 챕터 선택</figcaption></figure>
-          <figure class="shot"><img src="pf/shot_draft.jpg" alt="음양 드래프트" loading="lazy"><figcaption>음양 드래프트 — 강화 선택</figcaption></figure>
-          <figure class="shot"><img src="pf/shot_gacha.jpg" alt="영물 봉인함" loading="lazy"><figcaption>영물 봉인함 — 소환</figcaption></figure>
-          <figure class="shot"><img src="pf/shot_reward.jpg" alt="아이템 획득" loading="lazy"><figcaption>아이템 획득</figcaption></figure>
-        </div>
-      </div>
-    </div>
-
-    <!-- features -->
-    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
-      <div class="wrap">
-        <div class="sec-head rv">
-          <p class="eyebrow">Core Systems</p>
-          <h2 class="serif">매 판이 달라지는 밤</h2>
-        </div>
-        <div class="feats rv">
-          <div class="feat"><span class="no">01</span><h4>음양(陰陽) 드래프트</h4><p>음과 양, 두 진영의 영물 중 하나를 고를 때마다 태극 게이지가 기웁니다. 기운 쪽 영물은 강해지지만 반대편 영물은 저주에 걸려 약해지므로, 한쪽으로 몰지 균형을 지킬지가 매 판의 선택이 됩니다.</p></div>
-          <div class="feat"><span class="no">02</span><h4>개벽(開闢) — 판을 뒤집는 한 수</h4><p>기른 기운을 한 번에 터뜨리는 필살 버튼. 저주가 사라지고 기운 쪽 영물이 폭발적으로 강해지며, 중앙을 지켜 온 사람에게는 전 영물 강화라는 보상이 돌아옵니다. 요괴를 처치할수록 재사용이 빨라집니다.</p></div>
-          <div class="feat"><span class="no">03</span><h4>100 챕터 · 대마 4보스</h4><p>요괴 24종이 챕터마다 다른 대열로 몰려오고 이따금 광폭화로 속도를 올립니다. 25챕터마다 기다리는 대마(大魔)는 고유 스킬과 소환 압박으로 판을 흔듭니다.</p></div>
-          <div class="feat"><span class="no">04</span><h4>영물 봉인함 · 성장</h4><p>혼석으로 봉인함을 열어 정수를 모으고, 정수로 상위 영물을 해금해 파편으로 키웁니다. 주간 확률업과 30/100 천장이 수집의 끝을 보장합니다.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- bosses -->
-    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
-      <div class="wrap">
-        <div class="sec-head rv">
-          <p class="eyebrow">The Four Great Demons</p>
-          <h2 class="serif">대마(大魔) 사천왕</h2>
-          <p>25챕터마다 길을 막는 밤의 지배자들. 전원 생성형 아트 파이프라인으로 제작되었습니다.</p>
-        </div>
-        <div class="bosses rv">
-          <div class="boss"><img src="pf/boss_shuten.png" alt="슈텐도지" loading="lazy"><div class="ch">CH.25</div><h4 class="serif">슈텐도지</h4><span>오니의 왕</span></div>
-          <div class="boss"><img src="pf/boss_nurarihyon.png" alt="누라리횬" loading="lazy"><div class="ch">CH.50</div><h4 class="serif">누라리횬</h4><span>백귀야행 총대장</span></div>
-          <div class="boss"><img src="pf/boss_yamata.png" alt="야마타노오로치" loading="lazy"><div class="ch">CH.75</div><h4 class="serif">야마타노오로치</h4><span>살아있는 재앙</span></div>
-          <div class="boss"><img src="pf/boss_yeomra.png" alt="염라" loading="lazy"><div class="ch">CH.100</div><h4 class="serif">염라</h4><span>명계의 왕</span></div>
-        </div>
-        <div class="yokai rv">
-          <div class="yo"><img src="pf/mob_gumiho.png" alt="구미호" loading="lazy"><span>구미호</span></div>
-          <div class="yo"><img src="pf/mob_gangshi.png" alt="강시" loading="lazy"><span>강시</span></div>
-          <div class="yo"><img src="pf/mob_bakeneko.png" alt="바케네코" loading="lazy"><span>바케네코</span></div>
-          <div class="yo"><img src="pf/mob_docheol.png" alt="도철" loading="lazy"><span>도철</span></div>
-        </div>
-        <p class="more-note">… 외 20종의 요괴가 백귀야행에 함께합니다.</p>
-      </div>
-    </div>
-
-    <!-- gacha -->
-    <div style="padding:100px 0;border-bottom:1px solid var(--line-soft)">
-      <div class="wrap gacha">
-        <div class="box rv"><img src="pf/treasure_0.png" alt="영물 봉인함" loading="lazy"></div>
-        <div class="rv">
-          <p class="eyebrow" style="margin-bottom:10px">Collect &amp; Grow</p>
-          <h3 class="serif">봉인함 속에 잠든 영물</h3>
-          <p>쇠사슬과 부적으로 봉인된 함을 열면, 등급의 빛과 함께 영물의 정수가 깨어납니다. 개봉 연출부터 획득 팝업까지 — 모바일 수집형의 문법을 수묵과 금박으로 다시 썼습니다.</p>
-          <p style="color:var(--muted);font-size:13.5px">봉인함 · 아이콘 · 연출 이펙트 전량 생성형 아트 파이프라인 제작.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- shipping readiness -->
-    <div style="padding:100px 0">
-      <div class="wrap">
-        <div class="sec-head rv">
-          <p class="eyebrow">Built to Ship</p>
-          <h2 class="serif">내보낼 수 있는 상태로</h2>
-          <p>재미를 만드는 일과 별개로, 실제로 스토어에 올릴 때 필요한 것들을 함께 갖췄습니다.</p>
-        </div>
-        <div class="feats rv">
-          <div class="feat"><span class="no">01</span><h4>한국어 · 영어 · 일본어</h4><p>화면에 나오는 문구 589개를 세 언어로 옮겼습니다. 요괴와 영물의 이름, 스킬 설명까지 포함하며, 설정에서 언제든 바꿀 수 있습니다. 첫 실행에는 기기 언어를 따릅니다.</p></div>
-          <div class="feat"><span class="no">02</span><h4>재화 변조 방지</h4><p>골드 · 다이아 · 조각과 진행도를 보호 저장소에 담아, 메모리 편집이나 저장 파일 수정으로 값을 늘리는 가장 흔한 조작을 막았습니다.</p></div>
-          <div class="feat"><span class="no">03</span><h4>데이터로 잡은 난이도</h4><p>100챕터를 자동으로 순회하며 도달 한계를 기록하는 측정 도구를 만들어, 감이 아니라 수치로 곡선을 다듬었습니다. 난이도가 튀는 구간의 원인도 이 도구로 찾아냈습니다.</p></div>
-          <div class="feat"><span class="no">04</span><h4>세로 화면 · 한 손 조작</h4><p>드래그로 조준하고 놓으면 발사되는 단순한 조작. 노치와 안전 영역을 고려한 세로 레이아웃으로 안드로이드 실기에서 검증했습니다.</p></div>
-        </div>
-        <div class="langs rv">
-          <div class="lang"><img src="pf/l10n_ko.jpg" alt="한국어 화면" loading="lazy"><span>한국어</span></div>
-          <div class="lang"><img src="pf/l10n_en.jpg" alt="English screen" loading="lazy"><span>English</span></div>
-          <div class="lang"><img src="pf/l10n_ja.jpg" alt="日本語 화면" loading="lazy"><span>日本語</span></div>
-        </div>
-        <p class="more-note">같은 화면, 세 언어. 요괴와 영물의 이름까지 옮겼습니다.</p>
-      </div>
+      <div class="screens-footnote"><span>개발 중인 게임 화면이며, 출시 시 일부 달라질 수 있습니다.</span><span>한국어 · English · 日本語 · 繁體中文</span></div>
     </div>
   </section>
 
-  <!-- ═══════ ARCANE ═══════ -->
-  <section id="arcane">
-    <div class="wrap arcane">
-      <div class="arc-art rv"><img src="pf/arcane_key.jpg" alt="아르케인 아카데미 키 비주얼" loading="lazy"><span class="badge">Coming Soon</span></div>
-      <div class="rv">
-        <p class="eyebrow" style="margin-bottom:10px">Next Title</p>
-        <h3 class="serif">아르케인 아카데미 <span style="font-size:.55em;color:var(--muted)">ARCANE ACADEMY</span></h3>
-        <p class="sub">비밀스러운 엘리트들과의 동행</p>
-        <p class="desc">마법 학원을 무대로 한 매치3 퍼즐 로맨스. 퍼즐을 풀어 이야기를 열고, 네 명의 공략 대상과 쌓은 호감도가 결말을 바꿉니다.</p>
-        <p class="note">※ 개발 중인 타이틀로, 소개 문구와 아트는 확정 후 갱신됩니다.</p>
-        <div class="tags"><span class="tag">매치3 퍼즐</span><span class="tag">호감도 분기</span><span class="tag">캐릭터 일러스트</span></div>
-      </div>
+  <section class="other-games paper" id="games" aria-labelledby="games-title">
+    <div class="shell">
+      <div class="section-topline"><span class="eyebrow">04 / ANOTHER WORLD</span><span class="small-label">OUR GAMES</span></div>
+      <div class="other-heading"><h2 id="games-title">다음 이야기는,<br>조금 다른 마법으로.</h2><span class="outline-status">개발 중</span></div>
+      <article class="arcane-feature"><div class="arcane-image"><img src="pf/arcane-key.webp" alt="아르케인 아카데미의 네 주인공과 게임 로고" width="1000" height="930" loading="lazy"></div><div class="arcane-copy"><p class="eyebrow">PUZZLE MEETS ROMANCE</p><h3>아르케인 <br>아카데미</h3><p class="arcane-english">ARCANE ACADEMY</p><p class="arcane-description">마법 학원에서 시작되는 비밀스러운 동행.<br>퍼즐을 풀어 이야기를 열고,<br>당신의 선택으로 관계를 만들어 가세요.</p><div class="arcane-tags"><span>매치3 퍼즐</span><span>로맨스</span><span>스토리</span></div><p class="arcane-note">새로운 세계를 준비하고 있습니다.</p></div></article>
     </div>
   </section>
 
-  <!-- ═══════ CONTACT ═══════ -->
-  <section class="contact" id="contact">
-    <div class="wrap rv">
-      <p class="eyebrow">Get in touch</p>
-      <h2 class="serif">함께 세계를 빚고 싶다면.</h2>
-      <p>협업 · 문의 · 소식은 아래로 연락 주세요.</p>
-      <a class="mail" href="mailto:chopsaltteokgames@gmail.com">chopsaltteokgames@gmail.com</a>
-    </div>
-  </section>
+  <section class="studio-section" id="studio" aria-labelledby="studio-title"><div class="shell studio-layout"><div><p class="eyebrow">THE STUDIO</p><span class="studio-seal" aria-hidden="true">찹<br>살떡</span></div><div><h2 id="studio-title">작은 스튜디오.<br><em>오래 남는 세계.</em></h2><p>찹살떡 게임즈는 익숙한 이야기에서 낯선 재미를 찾습니다.<br>동양의 밤을 누비는 모험부터 마법 학원의 설렘까지.<br>한 번 더 플레이하고 싶은 순간, 오래 기억할 캐릭터를 만듭니다.</p><div class="studio-signature"><span>CHOPSALTTEOK GAMES</span><span>Independent Game Studio · Korea</span></div></div></div></section>
 
-  <footer>© 2026 찹살떡 게임즈 · Chopsaltteok Games — 쫀득하게 빚어낸 작은 세계들
-    <br><a class="mail" href="/privacy.html" style="font-size:12.5px">개인정보처리방침 · Privacy Policy</a></footer>
-
-<script>
-(function(){
-  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function fit(c){ var r=c.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2);
-    c.width=Math.max(1,r.width*d); c.height=Math.max(1,r.height*d); return d; }
-
-  // hero starfield
-  var sky=document.getElementById("stars");
-  if(sky){ var sx=sky.getContext("2d"), sd=fit(sky), stars=[];
-    for(var i=0;i<150;i++) stars.push({x:Math.random(),y:Math.random(),r:(Math.random()*1.3+.2),p:Math.random()*6.28,s:Math.random()*.6+.2});
-    function drawSky(t){ sx.clearRect(0,0,sky.width,sky.height);
-      for(var i=0;i<stars.length;i++){var s=stars[i];var a=.3+.45*Math.sin(t*.001*s.s+s.p);
-        sx.beginPath();sx.arc(s.x*sky.width,s.y*sky.height,s.r*sd,0,6.28);
-        sx.fillStyle="rgba(245,217,139,"+a.toFixed(3)+")";sx.fill();}
-      if(!reduce) requestAnimationFrame(drawSky); }
-    requestAnimationFrame(drawSky);
-    addEventListener("resize",function(){sd=fit(sky);});
-  }
-
-
-  // scroll reveal
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
-  },{threshold:.12});
-  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
-})();
-</script>
+  <section class="contact-section" id="contact" aria-labelledby="contact-title"><div class="shell"><p class="eyebrow">LET’S CREATE THE NEXT CHAPTER</p><div class="contact-heading"><h2 id="contact-title">다음 만남을<br>기다립니다.</h2><div><p>게임에 대한 이야기, 협업과 파트너십,<br>플레이 중 궁금한 점을 들려주세요.</p><a class="contact-mail" href="mailto:chopsaltteokgames@gmail.com">chopsaltteokgames@gmail.com <span aria-hidden="true">↗</span></a><button class="copy-email" type="button">이메일 주소 복사 <span aria-hidden="true">＋</span></button><span id="copy-status" role="status" aria-live="polite"></span></div></div></div></section>
+</main>
+<footer class="site-footer"><div class="shell"><a class="footer-brand" href="#top">CHOPSALTTEOK GAMES</a><span>© 2026 찹살떡 게임즈. All rights reserved.</span><a href="/privacy.html">개인정보처리방침</a><a class="back-top" href="#top" aria-label="페이지 맨 위로">↑</a></div></footer>
+<dialog class="gallery-dialog" aria-labelledby="gallery-caption"><div class="gallery-dialog-head"><p id="gallery-caption" aria-live="polite" aria-atomic="true"></p><button class="gallery-close" type="button" aria-label="게임 화면 확대 닫기">×</button></div><img id="gallery-image" alt=""><div class="gallery-controls"><button type="button" class="gallery-prev" aria-label="이전 게임 화면">←</button><span id="gallery-count"></span><button type="button" class="gallery-next" aria-label="다음 게임 화면">→</button></div></dialog>
 </body>
 </html>
