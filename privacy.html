@@ -40,11 +40,14 @@
   .lede p{margin:0; color:var(--cream); font-size:16.5px}
   .card{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:18px 20px; margin:20px 0}
   .card p:last-child{margin-bottom:0}
+  table{width:100%; border-collapse:collapse; margin:0 0 18px; font-size:14.5px}
+  th,td{text-align:left; vertical-align:top; padding:9px 10px; border-bottom:1px solid var(--line); color:#ded7ca}
+  th{color:var(--goldB); font-weight:700; white-space:nowrap}
   .meta{color:var(--muted); font-size:14px; margin-top:32px; padding-top:20px; border-top:1px solid var(--line)}
-  a.mail{color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(230,179,74,.35)}
+  a.mail{color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(230,179,74,.35); word-break:break-all}
   a.mail:hover{color:var(--goldB)}
   hr.split{border:0; border-top:1px solid var(--line); margin:72px 0 0}
-  @media(max-width:520px){ .wrap{padding:36px 18px 72px} h1{font-size:24px} h2{font-size:19px} }
+  @media(max-width:520px){ .wrap{padding:36px 18px 72px} h1{font-size:24px} h2{font-size:19px} table{font-size:13.5px} th,td{padding:7px 6px} }
 </style>
 </head>
 <body>
@@ -62,54 +65,88 @@
     <h2>개인정보처리방침</h2>
 
     <div class="lede">
-      <p>이 게임은 이용자의 <strong>개인정보를 수집하지 않습니다.</strong> 회원가입이 없고, 게임이 서버로 보내는 데이터도 없습니다. 진행 상황과 설정은 이용자의 기기 안에만 저장됩니다.</p>
+      <p>이 게임은 <strong>회원가입 없이</strong> 이용할 수 있습니다. 진행 상황을 보관하고 구매를 확인하기 위해 게임이 서버에 저장하는 정보는 아래에 모두 적었습니다. 이름·전화번호·위치 정보는 수집하지 않습니다.</p>
     </div>
 
-    <h3><span class="n">1</span>기기에 저장되는 정보</h3>
-    <p>다음 정보가 이용자의 기기 내부 저장소에만 기록되며, 외부로 전송되지 않습니다.</p>
-    <ul>
-      <li>게임 진행도 — 클리어한 챕터, 보유 재화, 보유·강화한 영물</li>
-      <li>환경 설정 — 언어, 음량, 이펙트 밝기</li>
-    </ul>
-    <p>이 정보에는 이름·연락처·기기 식별자 등 개인을 알아볼 수 있는 항목이 포함되지 않습니다. 앱을 삭제하면 함께 지워지며, 게임 내 설정에서도 초기화할 수 있습니다.</p>
+    <h3><span class="n">1</span>수집하는 정보와 목적</h3>
+    <table>
+      <tr><th>항목</th><th>시점</th><th>목적</th><th>필수</th></tr>
+      <tr><td>계정 식별자 (서버가 발급하는 임의 번호)</td><td>첫 실행</td><td>계정 구분, 구매·세이브 연결</td><td>필수</td></tr>
+      <tr><td>기기에서 만든 임의 비밀키의 해시값</td><td>첫 실행</td><td>같은 기기의 재접속 확인 (원문은 저장하지 않음)</td><td>필수</td></tr>
+      <tr><td>Google Play 게임즈 플레이어 ID</td><td>로그인 시</td><td>재설치·기기 변경 시 계정 복구</td><td>선택</td></tr>
+      <tr><td>게임 진행 데이터 (클라우드 세이브)</td><td>플레이 중</td><td>진행 보관과 복원</td><td>필수</td></tr>
+      <tr><td>구매 기록 (주문 번호, 상품, 시각)</td><td>결제 시</td><td>결제 검증, 중복 지급 방지, 환불·분쟁 대응</td><td>결제 시 필수</td></tr>
+      <tr><td>문의 내용, 앱 버전·기기 모델·OS·언어</td><td>문의 접수 시</td><td>문의 응대</td><td>문의 시 필수</td></tr>
+      <tr><td>답장용 이메일 주소</td><td>문의 접수 시</td><td>문의 답변 발송</td><td>선택</td></tr>
+      <tr><td>이용 통계·오류 보고 (Firebase)</td><td>플레이 중</td><td>안정성 개선, 이용 현황 파악</td><td>필수</td></tr>
+      <tr><td>광고 식별자 (AdMob)</td><td>광고 표시 시</td><td>보상형 광고 게재와 부정 방지</td><td>필수</td></tr>
+    </table>
+    <p>구매 토큰과 기기 비밀키는 원문을 저장하지 않고 해시값만 보관합니다. 언어·음량 등 환경 설정은 기기 안에만 저장됩니다.</p>
 
     <h3><span class="n">2</span>결제</h3>
     <p>게임 내 유료 상품은 Google Play 결제를 통해서만 처리됩니다.</p>
     <ul>
       <li>카드번호 등 결제 수단 정보는 <strong>Google이 처리하며, 개발자는 이를 받지도 저장하지도 않습니다.</strong></li>
-      <li>개발자는 구매가 정상적으로 이루어졌는지 확인하기 위한 주문 식별자와 상품 정보만 Google Play로부터 전달받습니다.</li>
+      <li>개발자는 구매가 정상적으로 이루어졌는지 확인하기 위한 주문 식별자와 상품 정보를 Google Play로부터 전달받아 서버에 기록합니다.</li>
       <li>결제·환불 문의는 Google Play 고객센터 또는 아래 연락처로 접수해 주십시오.</li>
     </ul>
 
-    <h3><span class="n">3</span>제3자 제공 및 광고</h3>
-    <p>개인정보를 제3자에게 제공하거나 판매하지 않습니다. 이 게임에는 광고가 포함되어 있지 않으며, 광고 식별자를 수집하지 않습니다. 추후 광고를 도입할 경우 이 방침을 먼저 개정하고 앱 안에서 알려 드립니다.</p>
-
-    <h3><span class="n">4</span>요청하는 권한</h3>
+    <h3><span class="n">3</span>클라우드 세이브와 계정 복구</h3>
     <ul>
-      <li><strong>인터넷 접근</strong> — 결제 처리에만 사용됩니다.</li>
+      <li>게임 진행 데이터는 서버에 보관되어, 앱을 다시 설치하거나 기기를 바꿔도 이어서 플레이할 수 있습니다.</li>
+      <li>Google Play 게임즈 로그인은 선택 사항이며, 로그인하면 플레이어 ID로 계정을 복구할 수 있습니다. 로그인하지 않아도 게임을 이용할 수 있습니다.</li>
+    </ul>
+
+    <h3><span class="n">4</span>광고와 분석</h3>
+    <ul>
+      <li>이 게임에는 <strong>보상형 광고</strong>(시청하면 보상을 받는 광고)가 포함되어 있으며, Google AdMob이 광고를 게재합니다. 이를 위해 Android 광고 식별자가 AdMob에 전달됩니다. Android 설정 → Google → 광고에서 광고 식별자를 재설정하거나 맞춤 광고를 제한할 수 있습니다.</li>
+      <li>앱의 안정성과 이용 현황을 파악하기 위해 Google Firebase(Analytics, Crashlytics)를 사용합니다. 여기에는 기기 모델·OS 버전·앱 버전·비정상 종료 기록이 포함되며, 개인을 직접 알아볼 수 있는 정보는 포함되지 않습니다.</li>
+      <li>위 목적 외에 개인정보를 제3자에게 제공하거나 판매하지 않습니다.</li>
+    </ul>
+
+    <h3><span class="n">5</span>보관 위치와 처리 위탁</h3>
+    <table>
+      <tr><th>수탁자</th><th>업무</th><th>위치</th></tr>
+      <tr><td>Amazon Web Services, Inc.</td><td>서버·데이터베이스·저장소 운영</td><td>대한민국 (서울)</td></tr>
+      <tr><td>Google LLC</td><td>Play 결제·게임즈 로그인, Firebase 분석·오류 보고, AdMob 광고</td><td>미국 등 Google 데이터 센터</td></tr>
+    </table>
+    <p>Google이 처리하는 정보는 국외로 이전될 수 있으며, Google의 개인정보 보호정책에 따라 처리됩니다.</p>
+
+    <h3><span class="n">6</span>보관 기간과 파기</h3>
+    <ul>
+      <li>계정 삭제를 요청하면 <strong>요청일로부터 7일 뒤</strong>에 계정 식별 정보, 게임 진행 데이터(모든 보관본), 이용 권리, 우편·쿠폰 기록, 문의 내용과 답장용 이메일을 파기합니다. 7일 안에는 앱에서 취소할 수 있습니다.</li>
+      <li>구매 기록은 「전자상거래 등에서의 소비자보호에 관한 법률」에 따라 <strong>5년</strong>간 보관한 뒤 파기합니다. 이 기간의 기록은 삭제된 계정·기기와 더 이상 연결되지 않습니다.</li>
+      <li>클라우드 세이브의 이전 보관본은 최대 10개, 30일까지 보관합니다.</li>
+      <li>서버 접속 기록은 90일 보관합니다.</li>
+    </ul>
+
+    <h3><span class="n">7</span>이용자의 권리</h3>
+    <ul>
+      <li><strong>계정 삭제</strong> — 앱의 설정 → 계정 → 계정 삭제. 앱을 이미 지운 경우에는 아래 안내 페이지의 방법으로 요청할 수 있습니다.</li>
+      <li>안내 페이지 — <a class="mail" href="https://78xh0yypaj.execute-api.ap-northeast-2.amazonaws.com/v1/soluna/account/delete-info">https://78xh0yypaj.execute-api.ap-northeast-2.amazonaws.com/v1/soluna/account/delete-info</a></li>
+      <li>열람·정정 요청과 그 밖의 문의는 아래 연락처로 보내 주십시오. 영업일 기준 7일 이내에 답변드립니다.</li>
+    </ul>
+
+    <h3><span class="n">8</span>요청하는 권한</h3>
+    <ul>
+      <li><strong>인터넷 접근</strong> — 서버 통신, 결제, 광고, 이용 통계에 사용됩니다.</li>
     </ul>
     <p>연락처, 위치, 카메라, 마이크, 사진·저장소 접근 권한은 요청하지 않습니다.</p>
 
-    <h3><span class="n">5</span>아동</h3>
-    <p>이 게임은 아동을 주 대상으로 만들어지지 않았습니다. 만 14세 미만 이용자로부터 개인정보를 의도적으로 수집하지 않습니다.</p>
+    <h3><span class="n">9</span>아동</h3>
+    <p>이 게임은 아동을 주 대상으로 만들어지지 않았습니다. 만 14세 미만 이용자로부터 개인정보를 의도적으로 수집하지 않으며, 그러한 사실을 알게 되면 지체 없이 삭제합니다.</p>
 
-    <h3><span class="n">6</span>보관 및 파기</h3>
-    <p>수집하는 개인정보가 없으므로 별도의 보관 기간이나 파기 절차를 두지 않습니다. 기기에 저장된 게임 데이터는 이용자가 직접 삭제할 수 있습니다.</p>
-
-    <h3><span class="n">7</span>이용자의 권리</h3>
-    <p>개인정보를 수집하지 않으므로 열람·정정·삭제를 요청할 대상 정보가 없습니다. 확인이 필요한 사항이 있으면 아래 연락처로 문의해 주십시오. 영업일 기준 7일 이내에 답변드립니다.</p>
-
-    <h3><span class="n">8</span>방침 변경</h3>
+    <h3><span class="n">10</span>방침 변경</h3>
     <p>내용이 바뀌면 이 페이지에 개정일과 함께 게시합니다. 이용자의 권리에 영향을 주는 중요한 변경은 앱 안에서도 알려 드립니다.</p>
 
-    <h3><span class="n">9</span>문의처</h3>
+    <h3><span class="n">11</span>문의처</h3>
     <div class="card">
       <p><strong>찹살떡 게임즈 (CST Games)</strong></p>
       <p>대표 · 개인정보 보호책임자 &nbsp; 황도윤</p>
       <p><a class="mail" href="mailto:chopsaltteokgames@gmail.com">chopsaltteokgames@gmail.com</a></p>
     </div>
 
-    <p class="meta">시행일 : 2026년 8월 13일 &nbsp;·&nbsp; 최종 개정일 : 2026년 8월 13일</p>
+    <p class="meta">시행일 : 2026년 8월 13일 &nbsp;·&nbsp; 최종 개정일 : 2026년 9월 25일 (서버 보관·광고·분석 항목 추가)</p>
   </section>
 
   <hr class="split">
@@ -119,54 +156,88 @@
     <h2>Privacy Policy</h2>
 
     <div class="lede">
-      <p>This game <strong>does not collect personal information.</strong> There is no account to create, and the game sends no data to any server. Your progress and settings are stored only on your own device.</p>
+      <p>This game can be played <strong>without creating an account.</strong> Everything the game stores on our server — to keep your progress and confirm purchases — is listed below. We do not collect your name, phone number, or location.</p>
     </div>
 
-    <h3><span class="n">1</span>What is stored on your device</h3>
-    <p>The following is written to your device's local storage only, and is never transmitted anywhere.</p>
-    <ul>
-      <li>Game progress — chapters cleared, currency held, spirits owned and upgraded</li>
-      <li>Preferences — language, volume, effect brightness</li>
-    </ul>
-    <p>None of this identifies you personally: no name, no contact details, no device identifier. Deleting the app removes it, and you can also reset it from the in-game settings.</p>
+    <h3><span class="n">1</span>What we collect and why</h3>
+    <table>
+      <tr><th>Data</th><th>When</th><th>Purpose</th><th>Required</th></tr>
+      <tr><td>Account identifier (random number issued by our server)</td><td>First launch</td><td>Telling accounts apart; linking purchases and saves</td><td>Required</td></tr>
+      <tr><td>Hash of a random device secret</td><td>First launch</td><td>Recognising the same device on reconnect (the secret itself is never stored)</td><td>Required</td></tr>
+      <tr><td>Google Play Games player ID</td><td>On sign-in</td><td>Restoring your account after reinstall or device change</td><td>Optional</td></tr>
+      <tr><td>Game progress (cloud save)</td><td>During play</td><td>Keeping and restoring your progress</td><td>Required</td></tr>
+      <tr><td>Purchase records (order ID, product, time)</td><td>On purchase</td><td>Verifying purchases, preventing duplicate grants, handling refunds and disputes</td><td>Required for purchases</td></tr>
+      <tr><td>Support ticket text, app version, device model, OS, language</td><td>When you contact us</td><td>Answering your request</td><td>Required for tickets</td></tr>
+      <tr><td>Reply e-mail address</td><td>When you contact us</td><td>Sending our reply</td><td>Optional</td></tr>
+      <tr><td>Usage statistics and crash reports (Firebase)</td><td>During play</td><td>Stability and understanding how the game is used</td><td>Required</td></tr>
+      <tr><td>Advertising ID (AdMob)</td><td>When an ad is shown</td><td>Serving rewarded ads and fraud prevention</td><td>Required</td></tr>
+    </table>
+    <p>Purchase tokens and the device secret are stored only as hashes, never in their original form. Preferences such as language and volume stay on your device.</p>
 
     <h3><span class="n">2</span>Purchases</h3>
     <p>In-app purchases are handled entirely through Google Play Billing.</p>
     <ul>
       <li>Payment details such as card numbers are <strong>handled by Google. The developer neither receives nor stores them.</strong></li>
-      <li>The developer receives only an order identifier and the product purchased, in order to confirm the transaction completed.</li>
+      <li>The developer receives an order identifier and the product purchased from Google Play, and records them on our server to confirm the transaction completed.</li>
       <li>For billing or refund questions, contact Google Play Support or the address below.</li>
     </ul>
 
-    <h3><span class="n">3</span>Third parties and advertising</h3>
-    <p>No personal information is shared with or sold to third parties. This game contains no advertising and collects no advertising identifier. Should advertising be introduced later, this policy will be revised first and you will be notified within the app.</p>
-
-    <h3><span class="n">4</span>Permissions requested</h3>
+    <h3><span class="n">3</span>Cloud save and account recovery</h3>
     <ul>
-      <li><strong>Internet access</strong> — used solely to process purchases.</li>
+      <li>Your progress is kept on our server so you can continue after reinstalling or switching devices.</li>
+      <li>Google Play Games sign-in is optional. If you sign in, your player ID lets you recover your account. The game works without signing in.</li>
+    </ul>
+
+    <h3><span class="n">4</span>Advertising and analytics</h3>
+    <ul>
+      <li>This game contains <strong>rewarded ads</strong> (optional ads you watch for an in-game reward), served by Google AdMob. Your Android advertising ID is passed to AdMob for this purpose. You can reset the advertising ID or opt out of personalised ads under Android Settings → Google → Ads.</li>
+      <li>We use Google Firebase (Analytics, Crashlytics) to monitor stability and understand usage. This includes device model, OS version, app version, and crash records, and does not include information that directly identifies you.</li>
+      <li>Beyond the purposes above, personal information is not shared with or sold to third parties.</li>
+    </ul>
+
+    <h3><span class="n">5</span>Where data is stored and who processes it</h3>
+    <table>
+      <tr><th>Processor</th><th>Service</th><th>Location</th></tr>
+      <tr><td>Amazon Web Services, Inc.</td><td>Server, database and storage</td><td>Seoul, Republic of Korea</td></tr>
+      <tr><td>Google LLC</td><td>Play Billing and Play Games sign-in, Firebase analytics and crash reporting, AdMob advertising</td><td>Google data centres, including the United States</td></tr>
+    </table>
+    <p>Data handled by Google may be transferred outside your country and is processed under Google's privacy policy.</p>
+
+    <h3><span class="n">6</span>Retention and deletion</h3>
+    <ul>
+      <li>When you request account deletion, <strong>7 days after the request</strong> we delete your account identifiers, game progress (all backups), entitlements, mail and coupon records, support tickets and reply e-mail. You can cancel within those 7 days from inside the app.</li>
+      <li>Purchase records are kept for <strong>5 years</strong> as required by the Korean Act on Consumer Protection in Electronic Commerce, then deleted. During that period they are no longer linked to the deleted account or device.</li>
+      <li>Earlier cloud-save backups are kept up to 10 versions and 30 days.</li>
+      <li>Server access logs are kept for 90 days.</li>
+    </ul>
+
+    <h3><span class="n">7</span>Your rights</h3>
+    <ul>
+      <li><strong>Delete your account</strong> — in the app: Settings → Account → Delete account. If you have already uninstalled the game, follow the instructions on the page below.</li>
+      <li>Deletion instructions — <a class="mail" href="https://78xh0yypaj.execute-api.ap-northeast-2.amazonaws.com/v1/soluna/account/delete-info">https://78xh0yypaj.execute-api.ap-northeast-2.amazonaws.com/v1/soluna/account/delete-info</a></li>
+      <li>For access or correction requests and any other question, write to the address below. We reply within 7 business days.</li>
+    </ul>
+
+    <h3><span class="n">8</span>Permissions requested</h3>
+    <ul>
+      <li><strong>Internet access</strong> — used for server communication, purchases, ads and usage statistics.</li>
     </ul>
     <p>The game does not request access to contacts, location, camera, microphone, photos, or storage.</p>
 
-    <h3><span class="n">5</span>Children</h3>
-    <p>This game is not directed primarily at children. We do not knowingly collect personal information from users under the age of 14.</p>
+    <h3><span class="n">9</span>Children</h3>
+    <p>This game is not directed primarily at children. We do not knowingly collect personal information from users under the age of 14, and we delete such information promptly if we become aware of it.</p>
 
-    <h3><span class="n">6</span>Retention and deletion</h3>
-    <p>Because no personal information is collected, there is no retention period or deletion procedure to observe. Game data stored on your device can be removed by you at any time.</p>
-
-    <h3><span class="n">7</span>Your rights</h3>
-    <p>As no personal information is collected, there is no data to access, correct, or delete on request. If you have any question, please write to the address below. We reply within 7 business days.</p>
-
-    <h3><span class="n">8</span>Changes to this policy</h3>
+    <h3><span class="n">10</span>Changes to this policy</h3>
     <p>Any change will be posted on this page along with its revision date. Changes that affect your rights will also be announced inside the app.</p>
 
-    <h3><span class="n">9</span>Contact</h3>
+    <h3><span class="n">11</span>Contact</h3>
     <div class="card">
       <p><strong>CST Games (찹살떡 게임즈)</strong></p>
       <p>Representative &amp; Data Protection Officer &nbsp; Hwang Doyun</p>
       <p><a class="mail" href="mailto:chopsaltteokgames@gmail.com">chopsaltteokgames@gmail.com</a></p>
     </div>
 
-    <p class="meta">Effective : 13 August 2026 &nbsp;·&nbsp; Last revised : 13 August 2026</p>
+    <p class="meta">Effective : 13 August 2026 &nbsp;·&nbsp; Last revised : 25 September 2026 (added server storage, advertising and analytics)</p>
   </section>
 
 </div>
