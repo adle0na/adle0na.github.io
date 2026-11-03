@@ -3,10 +3,6 @@
 // Static content stays usable without JavaScript; enhancements are scoped to their sections.
 const menuToggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#main-nav');
-const header = document.querySelector('.site-header');
-function updateHeader() { header.classList.toggle('scrolled', window.scrollY > 35); }
-window.addEventListener('scroll', updateHeader, {passive:true});
-updateHeader();
 function closeMenu() {
   navigation.classList.remove('open');
   menuToggle.setAttribute('aria-expanded', 'false');
@@ -37,10 +33,10 @@ motion.addEventListener('click', () => {
 });
 
 const bosses = {
-  shuten: {name:'슈텐도지', english:'SHUTEN DOJI', chapter:'THE FIRST DEMON / CHAPTER 25', src:'pf/boss-shuten.webp', alt:'붉은 술병과 거대한 방망이를 든 슈텐도지', description:'붉은 밤을 거느리는 오니의 왕.\n거대한 방망이 아래, 첫 시련이 시작됩니다.'},
-  nura: {name:'누라리횬', english:'NURARIHYON', chapter:'THE SECOND DEMON / CHAPTER 50', src:'pf/boss-nurarihyon.webp', alt:'푸른 기운에 둘러싸인 백귀야행의 주인 누라리횬', description:'푸른 어둠 속, 백귀야행을 이끄는 존재.\n고요한 미소 뒤로 깊은 밤이 다가옵니다.'},
-  orochi: {name:'야마타노오로치', english:'YAMATA NO OROCHI', chapter:'THE THIRD DEMON / CHAPTER 75', src:'pf/boss-orochi.webp', alt:'거대한 뱀의 기운을 거느린 야마타노오로치', description:'녹빛 재앙이 지나간 자리에 남은 침묵.\n뒤엉킨 운명의 끝에서 길을 찾아야 합니다.'},
-  yeomra: {name:'염라', english:'YEOMRA', chapter:'THE FINAL DEMON / CHAPTER 100', src:'pf/boss-yeomra.webp', alt:'검은 기운과 함께 모습을 드러낸 명계의 왕 염라', description:'백 번째 관문, 명계의 왕이 기다립니다.\n지나온 모든 선택을 마지막 심판 앞에 세우세요.'}
+  shuten: {name:'슈텐도지', english:'SHUTEN DOJI', chapter:'THE FIRST DEMON', src:'pf/boss-shuten.webp', alt:'붉은 술병과 거대한 방망이를 든 슈텐도지', description:'붉은 밤을 거느리는 오니의 왕.\n거대한 방망이 아래, 첫 시련이 시작됩니다.'},
+  nura: {name:'누라리횬', english:'NURARIHYON', chapter:'THE SECOND DEMON', src:'pf/boss-nurarihyon.webp', alt:'푸른 기운에 둘러싸인 백귀야행의 주인 누라리횬', description:'푸른 어둠 속, 백귀야행을 이끄는 존재.\n고요한 미소 뒤로 깊은 밤이 다가옵니다.'},
+  orochi: {name:'야마타노오로치', english:'YAMATA NO OROCHI', chapter:'THE THIRD DEMON', src:'pf/boss-orochi.webp', alt:'거대한 뱀의 기운을 거느린 야마타노오로치', description:'녹빛 재앙이 지나간 자리에 남은 침묵.\n뒤엉킨 운명의 끝에서 길을 찾아야 합니다.'},
+  yeomra: {name:'염라', english:'YEOMRA', chapter:'THE FINAL DEMON', src:'pf/boss-yeomra.webp', alt:'검은 기운과 함께 모습을 드러낸 명계의 왕 염라', description:'백귀야행의 끝, 명계의 왕이 기다립니다.\n지나온 모든 선택을 마지막 심판 앞에 세우세요.'}
 };
 const bossButtons = [...document.querySelectorAll('[role=tab][data-boss]')];
 const bossArt = document.querySelector('#boss-art');
@@ -118,6 +114,6 @@ document.querySelector('.copy-email').addEventListener('click', async () => {
     await navigator.clipboard.writeText('chopsaltteokgames@gmail.com');
     status.textContent = '이메일 주소를 복사했습니다.';
   } catch {
-    status.textContent = '주소를 길게 누르거나 선택해서 복사해 주세요.';
+    status.textContent = 'chopsaltteokgames@gmail.com — 이 주소를 선택해서 복사해 주세요.';
   }
 });
